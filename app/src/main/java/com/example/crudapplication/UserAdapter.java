@@ -13,6 +13,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     private List<UserProfile> users;
     private OnItemLongClickListener longClickListener;
 
+    public void setUsers(List<UserProfile> users) {
+        this.users = users;
+        notifyDataSetChanged();
+    }
+
     public interface OnItemLongClickListener {
         void onItemLongClick(UserProfile user);
     }
@@ -21,16 +26,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         this.longClickListener = listener;
     }
 
-    public void setUsers(List<UserProfile> users) {
-        this.users = users;
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // item.xml 따로생성해서 수정하기(임시)
-        View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_list_item, parent, false);
         return new UserViewHolder(view);
     }
 
@@ -48,18 +49,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         });
     }
 
+
     @Override
     public int getItemCount() {
         return users == null ? 0 : users.size();
     }
+
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
         TextView name, phone;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(android.R.id.text1);
-            phone = itemView.findViewById(android.R.id.text2);
+            name = itemView.findViewById(R.id.tv_name);
+            phone = itemView.findViewById(R.id.tv_phone);
         }
     }
 }
