@@ -1,5 +1,6 @@
 package com.example.crudapplication;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 import retrofit2.Call;
@@ -8,6 +9,7 @@ import retrofit2.Response;
 
 import java.util.List;
 
+// 데이터관리(비즈니스로직 관리)
 public class UserRepository {
     private final UserProfileApi api;
 
@@ -15,38 +17,42 @@ public class UserRepository {
         api = RetrofitService.getInstance().create(UserProfileApi.class);
     }
 
-    public void fetchAllUsers(MutableLiveData<List<UserProfile>> liveData) {
+    public void AllFetchUsers(MutableLiveData<List<UserProfile>> liveData) {
         api.getAllUsers().enqueue(new Callback<List<UserProfile>>() {
             @Override
-            public void onResponse(Call<List<UserProfile>> call, Response<List<UserProfile>> response) {
+            public void onResponse(@NonNull Call<List<UserProfile>> call, @NonNull Response<List<UserProfile>> response) {
                 if (response.isSuccessful()) {
                     liveData.postValue(response.body());
                 } else {
-                    Log.e("에러", "api 에러");
+                    Log.e("전체 데이터조회 실패", "전체 데이터 조회 실패: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<UserProfile>> call, Throwable t) {
-                Log.e("실패", t.getMessage());
+            public void onFailure(@NonNull Call<List<UserProfile>> call, @NonNull Throwable t) {
+                Log.e("API 연결실패", t.getMessage());
             }
         });
     }
 
     public void createUser(UserProfile user, Runnable onSuccess) {
-        api.createUser(user.getId(), user).enqueue(new Callback<Void>() {
+        Log.d("요청 URL", "/user/" + user.getId());
+        Log.d("요청 JSON", "UserProfile : " + user);
+
+        api.createUser(user.getId(), user.getName(), user.getPhone(), user.getAddress()).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
+                    Log.d("데이터 저장 성공", "데이터 저장 성공");
                     onSuccess.run();
                 } else {
-                    Log.e("에러", "api 에러");
+                    Log.e("데이터 저장 실패", "데이터 저장 실패: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("실패", t.getMessage());
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Log.e("API 연결실패", t.getMessage());
             }
         });
     }
@@ -54,17 +60,18 @@ public class UserRepository {
     public void deleteUser(String id, Runnable onSuccess) {
         api.deleteUser(id).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
+                    Log.d("데이터 삭제 성공", "데이터 삭제 성공");
                     onSuccess.run();
                 } else {
-                    Log.e("에러", "api 에러");
+                    Log.e("데이터 삭제 실패", "데이터 삭제 실패: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("실패", t.getMessage());
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Log.e("API 연결실패", t.getMessage());
             }
         });
     }

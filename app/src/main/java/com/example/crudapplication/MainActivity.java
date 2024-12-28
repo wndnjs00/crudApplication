@@ -1,15 +1,11 @@
 package com.example.crudapplication;
 
+import static android.icu.number.NumberRangeFormatter.with;
+
 import android.os.Bundle;
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setupViewModel();
         setupLongClickListener();
 
-        viewModel.fetchUsers();
+        viewModel.AllFetchUsers();  //데이터 새로고침(전체 데이터조회)
     }
 
 
@@ -45,13 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new UserAdapter();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 
+    // viewModel을 통해 getUserList을 실시간으로 observe해서 adapter에 데이터를 뿌려줌
     private void setupViewModel() {
-        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);   // ViewModel 초기화
         viewModel.getUserList().observe(this, users -> adapter.setUsers(users));
     }
 
@@ -64,5 +61,4 @@ public class MainActivity extends AppCompatActivity {
             );
         });
     }
-
 }

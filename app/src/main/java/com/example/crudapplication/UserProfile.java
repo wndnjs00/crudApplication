@@ -48,4 +48,17 @@ public class UserProfile {
     public void setAddress(String address) {
         this.address = address;
     }
+
+
+    // 추후 삭제
+    // JSON 데이터를 확인하기 위한 toString() 메서드 추가
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":\"" + id + "\"," +
+                "\"name\":\"" + name + "\"," +
+                "\"phone\":\"" + phone + "\"," +
+                "\"address\":\"" + address + "\"" +
+                "}";
+    }
 }

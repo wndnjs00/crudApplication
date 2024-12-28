@@ -7,8 +7,8 @@ import java.util.List;
 
 public class UserViewModel extends ViewModel {
 
-    private UserRepository repository;
-    private MutableLiveData<List<UserProfile>> userList = new MutableLiveData<>();
+    private final UserRepository repository;
+    private final MutableLiveData<List<UserProfile>> userList = new MutableLiveData<>();
 
     public UserViewModel() {
         repository = new UserRepository();
@@ -18,20 +18,21 @@ public class UserViewModel extends ViewModel {
         return userList;
     }
 
-    public void fetchUsers() {
-        repository.fetchAllUsers(userList);
+    public void AllFetchUsers() {
+        repository.AllFetchUsers(userList);
     }
 
-    public void addUser(UserProfile user, Runnable onSuccess) {
+    public void addUser(String id, String name, String phone, String address, Runnable onSuccess) {
+        UserProfile user = new UserProfile(id, name, phone, address);
         repository.createUser(user, () -> {
-            fetchUsers();
+            AllFetchUsers();    // 데이터 새로고침
             onSuccess.run();
         });
     }
 
     public void deleteUser(String id, Runnable onSuccess) {
         repository.deleteUser(id, () -> {
-            fetchUsers();
+            AllFetchUsers();    //데이터 새로고침
             onSuccess.run();
         });
     }
