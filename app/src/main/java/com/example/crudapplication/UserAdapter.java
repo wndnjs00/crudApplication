@@ -5,17 +5,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
-    private List<UserProfile> users;
+    private List<UserProfile> users = new ArrayList<>();
     private OnItemLongClickListener longClickListener;
 
-    public void setUsers(List<UserProfile> users) {
-        this.users = users;
-        notifyDataSetChanged();
+    public void setUsers(List<UserProfile> newUsers) {
+        // DiffUtil 연결
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new UserDiffutil(this.users, newUsers));
+        this.users.clear();
+        this.users.addAll(newUsers);
+        diffResult.dispatchUpdatesTo(this); // dispatchUpdatesTo를 통해 변경사항을 리사이클러에 적용
     }
 
     public interface OnItemLongClickListener {
@@ -34,8 +39,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         return new UserViewHolder(view);
     }
 
+    // 데이터 연결
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
+        // UserProfile데이터 가져와서 뿌려줌
         UserProfile user = users.get(position);
         holder.name.setText(user.getName());
         holder.phone.setText(user.getPhone());
@@ -49,12 +56,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
 
+    // 아이템 개수리턴
     @Override
     public int getItemCount() {
         return users == null ? 0 : users.size();
     }
 
 
+    // 레이아웃과 데이터 연결
     static class UserViewHolder extends RecyclerView.ViewHolder {
         TextView name, phone;
 
