@@ -1,7 +1,7 @@
 package com.example.crudapplication;
 
 public class UserProfile {
-    private String id;
+    private int id; // 데이터베이스에서 자동 생성
     private String name;
     private String phone;
     private String address;
@@ -9,19 +9,18 @@ public class UserProfile {
     public UserProfile() {
     }
 
-    public UserProfile(String id, String name, String phone, String address) {
-        this.id = id;
+    public UserProfile(String name, String phone, String address) {
         this.name = name;
         this.phone = phone;
         this.address = address;
     }
 
     // Getter와 Setter
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

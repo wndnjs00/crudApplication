@@ -20,7 +20,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new UserDiffutil(this.users, newUsers));
         this.users.clear();
         this.users.addAll(newUsers);
-        diffResult.dispatchUpdatesTo(this); // dispatchUpdatesTo를 통해 변경사항을 리사이클러에 적용
+        diffResult.dispatchUpdatesTo(this); // dispatchUpdatesTo를 통해 변경사항을 리사이클러뷰에 적용
     }
 
     public interface OnItemLongClickListener {

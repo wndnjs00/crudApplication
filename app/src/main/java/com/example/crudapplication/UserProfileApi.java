@@ -14,10 +14,10 @@ public interface UserProfileApi {
     @GET("/user/all")
     Call<List<UserProfile>> getAllUsers();
 
-    @POST("/user/{id}")
-    Call<Void> createUser(@Path("id") String id, @Query("name") String name, @Query("phone") String phone, @Query("address") String address);
+    @POST("/user")
+    Call<Void> createUser(@Query("name") String name, @Query("phone") String phone, @Query("address") String address);
 
     @DELETE("/user/{id}")
-    Call<Void> deleteUser(@Path("id") String id);
+    Call<Void> deleteUser(@Path("id") int id);
 }
 

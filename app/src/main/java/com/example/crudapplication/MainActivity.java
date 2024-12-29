@@ -49,12 +49,12 @@ public class MainActivity extends AppCompatActivity {
     // viewModel을 통해 getUserList을 실시간으로 observe해서 adapter에 데이터를 뿌려줌
     private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);   // ViewModel 초기화
-        viewModel.getUserList().observe(this, users -> adapter.setUsers(users));
+        viewModel.getUserList().observe(this, users ->
+                adapter.setUsers(users)
+        );
     }
 
     private void setupLongClickListener() {
-        viewModel.getUserList().observe(this, users -> adapter.setUsers(users));
-
         adapter.setOnItemLongClickListener(user -> {
             viewModel.deleteUser(user.getId(), () ->
                     Toast.makeText(this, "삭제완료", Toast.LENGTH_SHORT).show()

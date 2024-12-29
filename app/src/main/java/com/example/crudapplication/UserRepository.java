@@ -24,7 +24,7 @@ public class UserRepository {
                 if (response.isSuccessful()) {
                     liveData.postValue(response.body());
                 } else {
-                    Log.e("전체 데이터조회 실패", "전체 데이터 조회 실패: " + response.code());
+                    Log.e("전체 데이터조회 실패", "전체 데이터 조회 실패: " + response.code()+ "-" + response.message());
                 }
             }
 
@@ -36,17 +36,16 @@ public class UserRepository {
     }
 
     public void createUser(UserProfile user, Runnable onSuccess) {
-        Log.d("요청 URL", "/user/" + user.getId());
         Log.d("요청 JSON", "UserProfile : " + user);
 
-        api.createUser(user.getId(), user.getName(), user.getPhone(), user.getAddress()).enqueue(new Callback<Void>() {
+        api.createUser(user.getName(), user.getPhone(), user.getAddress()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
                     Log.d("데이터 저장 성공", "데이터 저장 성공");
                     onSuccess.run();
                 } else {
-                    Log.e("데이터 저장 실패", "데이터 저장 실패: " + response.code());
+                    Log.e("데이터 저장 실패", "데이터 저장 실패: " + response.code() + "-" + response.message());
                 }
             }
 
@@ -57,7 +56,7 @@ public class UserRepository {
         });
     }
 
-    public void deleteUser(String id, Runnable onSuccess) {
+    public void deleteUser(int id, Runnable onSuccess) {
         api.deleteUser(id).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
@@ -65,7 +64,7 @@ public class UserRepository {
                     Log.d("데이터 삭제 성공", "데이터 삭제 성공");
                     onSuccess.run();
                 } else {
-                    Log.e("데이터 삭제 실패", "데이터 삭제 실패: " + response.code());
+                    Log.e("데이터 삭제 실패", "데이터 삭제 실패: " + response.code()+ "-" + response.message());
                 }
             }
 

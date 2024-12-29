@@ -9,8 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 public class AddUserActivity extends AppCompatActivity {
-
-    private EditText idEdit;
     private EditText nameEdit;
     private EditText phoneEdit;
     private EditText addressEdit;
@@ -30,7 +28,6 @@ public class AddUserActivity extends AppCompatActivity {
 
     // UI 요소 초기화
     private void initializeViews() {
-        idEdit = findViewById(R.id.edit_id);
         nameEdit = findViewById(R.id.edit_name);
         phoneEdit = findViewById(R.id.edit_phone);
         addressEdit = findViewById(R.id.edit_address);
@@ -39,12 +36,11 @@ public class AddUserActivity extends AppCompatActivity {
 
     private void setupSaveButtonListener() {
         saveButton.setOnClickListener(v -> {
-            String id = idEdit.getText().toString();
             String name = nameEdit.getText().toString();
             String phone = phoneEdit.getText().toString();
             String address = addressEdit.getText().toString();
 
-            if (id.isEmpty() || name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+            if (name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
                 Toast.makeText(this, "모든값을 입력해주세요", Toast.LENGTH_SHORT).show();
             }
 
@@ -52,9 +48,8 @@ public class AddUserActivity extends AppCompatActivity {
             viewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
             // 데이터 저장
-            viewModel.addUser(id, name, phone, address, () -> {
+            viewModel.addUser(name, phone, address, () -> {
                 Toast.makeText(this, "데이터가 추가되었습니다", Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish(); // 현재 Activity 종료

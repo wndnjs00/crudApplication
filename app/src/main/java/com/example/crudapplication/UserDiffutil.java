@@ -25,11 +25,12 @@ class UserDiffutil extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldList.get(oldItemPosition).getId().equals(newList.get(newItemPosition).getId());
+        // 단순히 int값을 비교할땐 == 연산자를 사용
+        return oldList.get(oldItemPosition).getId() == newList.get(newItemPosition).getId();
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
+        return oldList.get(oldItemPosition).getId() == newList.get(newItemPosition).getId();
     }
 }
