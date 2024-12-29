@@ -18,10 +18,10 @@
         android:theme="@style/Theme.CrudApplication"
         tools:targetApi="31">
         <activity
-            android:name=".AddUserActivity"
+            android:name=".presentation.activity.AddUserActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,7 +1,7 @@
-package com.example.crudapplication;
+package com.example.crudapplication.presentation.adpater;
 
 import androidx.recyclerview.widget.DiffUtil;
-
+import com.example.crudapplication.data.model.UserProfile;
 import java.util.List;
 
 class UserDiffutil extends DiffUtil.Callback {

@@ -1,8 +1,9 @@
-package com.example.crudapplication;
+package com.example.crudapplication.presentation.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
+import com.example.crudapplication.data.model.UserProfile;
+import com.example.crudapplication.data.repository.UserRepository;
 import java.util.List;
 
 public class UserViewModel extends ViewModel {

@@ -1,6 +1,4 @@
-package com.example.crudapplication;
-
-import static android.icu.number.NumberRangeFormatter.with;
+package com.example.crudapplication.presentation.activity;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +7,9 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.crudapplication.R;
+import com.example.crudapplication.presentation.adpater.UserAdapter;
+import com.example.crudapplication.presentation.viewmodel.UserViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {

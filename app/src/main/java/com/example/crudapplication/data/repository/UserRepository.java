@@ -1,8 +1,13 @@
-package com.example.crudapplication;
+package com.example.crudapplication.data.repository;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
+
+import com.example.crudapplication.data.model.UserProfile;
+import com.example.crudapplication.data.api.RetrofitService;
+import com.example.crudapplication.data.api.UserProfileApi;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

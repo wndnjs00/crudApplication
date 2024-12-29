@@ -1,4 +1,4 @@
-package com.example.crudapplication;
+package com.example.crudapplication.data.api;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

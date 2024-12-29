@@ -1,4 +1,4 @@
-package com.example.crudapplication;
+package com.example.crudapplication.presentation.adpater;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +7,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.example.crudapplication.R;
+import com.example.crudapplication.data.model.UserProfile;
 import java.util.ArrayList;
 import java.util.List;
 

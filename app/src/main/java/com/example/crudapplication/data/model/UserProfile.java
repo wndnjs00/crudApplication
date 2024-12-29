@@ -1,4 +1,4 @@
-package com.example.crudapplication;
+package com.example.crudapplication.data.model;
 
 public class UserProfile {
     private int id; // 데이터베이스에서 자동 생성

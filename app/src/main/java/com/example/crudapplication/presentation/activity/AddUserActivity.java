@@ -1,4 +1,4 @@
-package com.example.crudapplication;
+package com.example.crudapplication.presentation.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.example.crudapplication.R;
+import com.example.crudapplication.presentation.viewmodel.UserViewModel;
 
 public class AddUserActivity extends AppCompatActivity {
     private EditText nameEdit;
