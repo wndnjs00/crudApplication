@@ -45,18 +45,18 @@ public class AddUserActivity extends AppCompatActivity {
 
             if (name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
                 Toast.makeText(this, "모든값을 입력해주세요", Toast.LENGTH_SHORT).show();
+            }else{
+                // ViewModelProvider로 ViewModel 초기화 (Hilt를 사용한 ViewModel은 반드시 ViewModelProvider로 주입받아야함)
+                viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
+                // 데이터 저장
+                viewModel.addUser(name, phone, address, () -> {
+                    Toast.makeText(this, "데이터가 추가되었습니다", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish(); // 현재 Activity 종료
+                });
             }
-
-            // ViewModelProvider로 ViewModel 초기화 (Hilt를 사용한 ViewModel은 반드시 ViewModelProvider로 주입받아야함)
-            viewModel = new ViewModelProvider(this).get(UserViewModel.class);
-
-            // 데이터 저장
-            viewModel.addUser(name, phone, address, () -> {
-                Toast.makeText(this, "데이터가 추가되었습니다", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                finish(); // 현재 Activity 종료
-            });
         });
     }
 }
