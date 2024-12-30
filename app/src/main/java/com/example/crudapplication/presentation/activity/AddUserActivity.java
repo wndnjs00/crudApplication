@@ -9,13 +9,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.crudapplication.R;
 import com.example.crudapplication.presentation.viewmodel.UserViewModel;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class AddUserActivity extends AppCompatActivity {
     private EditText nameEdit;
     private EditText phoneEdit;
     private EditText addressEdit;
     private Button saveButton;
-    private UserViewModel viewModel;
+    private UserViewModel viewModel;    // ViewModel 선언
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,6 @@ public class AddUserActivity extends AppCompatActivity {
 
         initializeViews();
         setupSaveButtonListener();
-
     }
 
 
@@ -46,7 +47,7 @@ public class AddUserActivity extends AppCompatActivity {
                 Toast.makeText(this, "모든값을 입력해주세요", Toast.LENGTH_SHORT).show();
             }
 
-            // ViewModel 초기화
+            // ViewModelProvider로 ViewModel 초기화 (Hilt를 사용한 ViewModel은 반드시 ViewModelProvider로 주입받아야함)
             viewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
             // 데이터 저장

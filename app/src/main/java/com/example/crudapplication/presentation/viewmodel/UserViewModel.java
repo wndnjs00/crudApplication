@@ -5,14 +5,19 @@ import androidx.lifecycle.ViewModel;
 import com.example.crudapplication.data.model.UserProfile;
 import com.example.crudapplication.data.repository.UserRepository;
 import java.util.List;
+import javax.inject.Inject;
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
+@HiltViewModel
 public class UserViewModel extends ViewModel {
 
     private final UserRepository repository;
     private final MutableLiveData<List<UserProfile>> userList = new MutableLiveData<>();
 
-    public UserViewModel() {
-        repository = new UserRepository();
+    // Hilt를 통해 UserRepository 인터페이스를 주입받음
+    @Inject
+    public UserViewModel(UserRepository repository) {
+        this.repository = repository;
     }
 
     public MutableLiveData<List<UserProfile>> getUserList() {
