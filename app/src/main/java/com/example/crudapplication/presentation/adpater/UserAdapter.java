@@ -14,6 +14,7 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     private List<UserProfile> users = new ArrayList<>();
+    private OnItemClickListener clickListener;
     private OnItemLongClickListener longClickListener;
 
     public void setUsers(List<UserProfile> newUsers) {
@@ -24,6 +25,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         diffResult.dispatchUpdatesTo(this); // dispatchUpdatesTo를 통해 변경사항을 리사이클러뷰에 적용
     }
 
+    // 클릭리스너 인터페이스
+    public interface OnItemClickListener{
+        void onItemClick(UserProfile user);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.clickListener = listener;
+    }
+
+    // 롱클릭리스너 인터페이스
     public interface OnItemLongClickListener {
         void onItemLongClick(UserProfile user);
     }
@@ -48,6 +59,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.name.setText(user.getName());
         holder.phone.setText(user.getPhone());
 
+        // 클릭 이벤트
+        holder.itemView.setOnClickListener(v -> {
+            if (clickListener != null){
+                clickListener.onItemClick(user);
+            }
+        });
+
+        // 롱클링 이벤트
         holder.itemView.setOnLongClickListener(v -> {
             if (longClickListener != null) {
                 longClickListener.onItemLongClick(user);

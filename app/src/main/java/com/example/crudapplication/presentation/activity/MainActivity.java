@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setupRecyclerView();
         setupViewModel();
         setupLongClickListener();
+        setupClickListener();
 
         viewModel.AllFetchUsers();  //데이터 새로고침(전체 데이터조회)
     }
@@ -58,6 +59,17 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getUserList().observe(this, users ->
                 adapter.setUsers(users)
         );
+    }
+
+    private void setupClickListener(){
+        adapter.setOnItemClickListener(user -> {
+            // DetailActivity로 이동하면서 데이터 전달
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra("name", user.getName());
+            intent.putExtra("phone", user.getPhone());
+            intent.putExtra("address", user.getAddress());
+            startActivity(intent);
+        });
     }
 
     private void setupLongClickListener() {
