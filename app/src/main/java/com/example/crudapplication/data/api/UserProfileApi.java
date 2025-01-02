@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -17,6 +18,9 @@ public interface UserProfileApi {
 
     @POST("/user")
     Call<Void> createUser(@Query("name") String name, @Query("phone") String phone, @Query("address") String address);
+
+    @PUT("/user/{id}")
+    Call<Void> updateUser(@Path("id") int id, @Query("name") String name, @Query("phone") String phone, @Query("address") String address);
 
     @DELETE("/user/{id}")
     Call<Void> deleteUser(@Path("id") int id);

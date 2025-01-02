@@ -13,9 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class AddUserActivity extends AppCompatActivity {
-    private EditText nameEdit;
-    private EditText phoneEdit;
-    private EditText addressEdit;
+    private EditText nameEdit, phoneEdit, addressEdit;
     private Button saveButton;
     private UserViewModel viewModel;    // ViewModel 선언
 

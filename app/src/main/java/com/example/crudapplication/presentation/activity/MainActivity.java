@@ -33,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
         viewModel.AllFetchUsers();  //데이터 새로고침(전체 데이터조회)
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewModel.AllFetchUsers(); // 화면 복귀 시 데이터 새로고침
+    }
 
     private void clickFabButton() {
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -65,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(user -> {
             // DetailActivity로 이동하면서 데이터 전달
             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra("id", user.getId()); // id 값 추가
             intent.putExtra("name", user.getName());
             intent.putExtra("phone", user.getPhone());
             intent.putExtra("address", user.getAddress());

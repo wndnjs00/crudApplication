@@ -29,6 +29,7 @@ public class UserRepositoryImpl implements UserRepository{
             public void onResponse(@NonNull Call<List<UserProfile>> call, @NonNull Response<List<UserProfile>> response) {
                 if (response.isSuccessful()) {
                     liveData.postValue(response.body());
+                    Log.d("전체 데이터조회 성공", "전체 데이터 조회 성공");
                 } else {
                     Log.e("전체 데이터조회 실패", "전체 데이터 조회 실패: " + response.code()+ "-" + response.message());
                 }
@@ -53,6 +54,26 @@ public class UserRepositoryImpl implements UserRepository{
                     onSuccess.run();
                 } else {
                     Log.e("데이터 저장 실패", "데이터 저장 실패: " + response.code() + "-" + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Log.e("API 연결실패", t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void updateUser(int id, String name, String phone, String address, Runnable onSuccess) {
+        api.updateUser(id, name , phone, address).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()){
+                    Log.d("데이터 수정 성공", "데이터 수정 성공");
+                    onSuccess.run();
+                }else{
+                    Log.e("데이터 수정 실패", "데이터 수정 실패: " + response.code() + "-" + response.message());
                 }
             }
 

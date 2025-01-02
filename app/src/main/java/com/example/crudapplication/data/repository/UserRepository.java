@@ -7,5 +7,6 @@ import java.util.List;
 public interface UserRepository {
     void AllFetchUsers(MutableLiveData<List<UserProfile>> liveData);
     void createUser(UserProfile user, Runnable onSuccess);
+    void updateUser(int id, String name, String phone, String address, Runnable onSuccess);
     void deleteUser(int id, Runnable onSuccess);
 }
