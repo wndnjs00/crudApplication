@@ -28,7 +28,7 @@ public class UserRepositoryImpl implements UserRepository{
             @Override
             public void onResponse(@NonNull Call<List<UserProfile>> call, @NonNull Response<List<UserProfile>> response) {
                 if (response.isSuccessful()) {
-                    liveData.postValue(response.body());
+                    liveData.setValue(response.body()); // setValue로 LiveData 갱신 (setValue or postValue로 LiveData를통한 데이터 실시간관찰 가능)
                     Log.d("전체 데이터조회 성공", "전체 데이터 조회 성공");
                 } else {
                     Log.e("전체 데이터조회 실패", "전체 데이터 조회 실패: " + response.code()+ "-" + response.message());

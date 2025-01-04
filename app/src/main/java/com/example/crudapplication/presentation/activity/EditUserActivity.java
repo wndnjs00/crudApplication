@@ -66,6 +66,8 @@ public class EditUserActivity extends AppCompatActivity {
             viewModel = new ViewModelProvider(this).get(UserViewModel.class);
             viewModel.updateUser(userId, name, phone , address, () -> {
                 Toast.makeText(this, "데이터가 수정되었습니다", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 finish();
             });
 

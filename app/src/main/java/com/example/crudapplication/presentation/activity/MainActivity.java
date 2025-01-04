@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    // viewModel을 통해 getUserList을 실시간으로 observe해서 adapter에 데이터를 뿌려줌
+    // viewModel을 통해 getUserList을 실시간으로 observe해서 adapter에 데이터를 뿌려줌 (LiveData를 통해 변경되는 데이터를 실시간으로 관찰)
     private void setupViewModel() {
         // ViewModelProvider로 ViewModel 초기화
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
