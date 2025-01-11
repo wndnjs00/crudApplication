@@ -12,13 +12,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class UserViewModel extends ViewModel {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final MutableLiveData<List<UserProfile>> userList = new MutableLiveData<>();
 
     // Hilt를 통해 UserRepository 인터페이스를 주입받음
     @Inject
-    public UserViewModel(UserRepository repository) {
-        this.repository = repository;
+    public UserViewModel(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     // LiveData를 사용해 실시간으로 데이터를 관찰해서 view에 보겨주기위함
@@ -27,26 +27,26 @@ public class UserViewModel extends ViewModel {
     }
 
     public void AllFetchUsers() {
-        repository.AllFetchUsers(userList);
+        userRepository.AllFetchUsers(userList);
     }
 
     public void addUser(String name, String phone, String address, Runnable onSuccess) {
         UserProfile user = new UserProfile(name, phone, address);
-        repository.createUser(user, () -> {
+        userRepository.createUser(user, () -> {
             AllFetchUsers();    // 데이터 새로고침
             onSuccess.run();
         });
     }
 
     public void updateUser(int id, String name, String phone, String address, Runnable onSuccess){
-        repository.updateUser(id, name, phone, address, () -> {
+        userRepository.updateUser(id, name, phone, address, () -> {
             AllFetchUsers();    //데이터 새로고침
             onSuccess.run();
         });
     }
 
     public void deleteUser(int id, Runnable onSuccess) {
-        repository.deleteUser(id, () -> {
+        userRepository.deleteUser(id, () -> {
             AllFetchUsers();    //데이터 새로고침
             onSuccess.run();
         });
