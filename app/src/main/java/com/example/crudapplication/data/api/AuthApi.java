@@ -2,6 +2,8 @@ package com.example.crudapplication.data.api;
 
 import com.example.crudapplication.data.model.User;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -17,5 +19,5 @@ public interface AuthApi {
 
     // 로그인
     @POST("/user/login")
-    Call<User> loginUser(@Query("email") String email, @Query("password") String password);
+    Call<Map<String, Object>> loginUser(@Query("email") String email, @Query("password") String password);
 }
