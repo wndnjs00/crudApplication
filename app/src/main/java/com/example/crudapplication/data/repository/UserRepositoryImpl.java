@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
+import com.example.crudapplication.data.dto.UserProfileRequestDto;
 import com.example.crudapplication.data.model.ApiResponse;
 import com.example.crudapplication.data.model.UserProfile;
 import com.example.crudapplication.data.api.RetrofitService;
@@ -50,8 +51,9 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public void createUser(UserProfile user, Runnable onSuccess) {
         Log.d("요청 JSON", "UserProfile : " + user);
+        UserProfileRequestDto userProfileRequestDto = new UserProfileRequestDto(user.getName(), user.getPhone(), user.getAddress());
 
-        api.createUser(user.getName(), user.getPhone(), user.getAddress()).enqueue(new Callback<ApiResponse<Void>>() {
+        api.createUser(userProfileRequestDto).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -71,7 +73,8 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public void updateUser(UUID uuid, String name, String phone, String address, Runnable onSuccess) {
-        api.updateUser(uuid, name , phone, address).enqueue(new Callback<ApiResponse<Void>>() {
+        UserProfileRequestDto userProfileRequestDto = new UserProfileRequestDto(name, phone, address);
+        api.updateUser(uuid, userProfileRequestDto).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
                 if (response.isSuccessful()){

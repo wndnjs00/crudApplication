@@ -1,9 +1,11 @@
 package com.example.crudapplication.data.api;
 
+import com.example.crudapplication.data.dto.UserProfileRequestDto;
 import com.example.crudapplication.data.model.ApiResponse;
 import com.example.crudapplication.data.model.UserProfile;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -19,10 +21,10 @@ public interface UserProfileApi {
     Call<ApiResponse<List<UserProfile>>> getAllUsers();
 
     @POST("/user/new")
-    Call<ApiResponse<Void>> createUser(@Query("name") String name, @Query("phone") String phone, @Query("address") String address);
+    Call<ApiResponse<Void>> createUser(@Body UserProfileRequestDto user);   // Use @Body instead of @Query for POST requests
 
     @PUT("/user/{uuid}")
-    Call<ApiResponse<Void>> updateUser(@Path("uuid") UUID uuid, @Query("name") String name, @Query("phone") String phone, @Query("address") String address);
+    Call<ApiResponse<Void>> updateUser(@Path("uuid") UUID uuid, @Body UserProfileRequestDto user);  // Same here, @Body instead of @Query
 
     @DELETE("/user/{uuid}")
     Call<ApiResponse<Void>> deleteUser(@Path("uuid") UUID uuid);

@@ -2,7 +2,7 @@ package com.example.crudapplication.data.model;
 
 public class ApiResponse<T> {
     private String status;
-    private String message;
+    private String resultMsg;
     private T data;
 
     public String getStatus() {
@@ -13,12 +13,12 @@ public class ApiResponse<T> {
         this.status = status;
     }
 
-    public String getMessage() {
-        return message;
+    public String getResultMsg() {
+        return resultMsg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setResultMsg(String resultMsg) {
+        this.resultMsg = resultMsg;
     }
 
     public T getData() {
