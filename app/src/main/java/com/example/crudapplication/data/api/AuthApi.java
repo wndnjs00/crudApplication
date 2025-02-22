@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 public interface AuthApi {
     // 회원가입
     @POST("/auth/register")
-    Call<ApiResponse<?>> registerUser(@Body RegisterRequestDto registerRequestDto);
+    Call<ApiResponse<Void>> registerUser(@Body RegisterRequestDto registerRequestDto);
 
     // 로그인
     @POST("/auth/login")

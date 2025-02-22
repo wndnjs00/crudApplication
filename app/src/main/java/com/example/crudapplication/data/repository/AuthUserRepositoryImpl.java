@@ -38,9 +38,9 @@ public class AuthUserRepositoryImpl implements AuthUserRepository{
 
         RegisterRequestDto requestDto = new RegisterRequestDto(email, password, name, phone, address);
         // api호출
-        api.registerUser(requestDto).enqueue(new Callback<ApiResponse<?>>() {
+        api.registerUser(requestDto).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
-            public void onResponse(@NonNull Call<ApiResponse<?>> call, @NonNull Response<ApiResponse<?>> response) {
+            public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
                 if (response.isSuccessful() && response.body() != null ){
                     Log.d("RegisterUser_성공", "User registered successfully: " + response.body());
                     onSuccess.run();    // 성공 시 콜백 실행
@@ -51,7 +51,7 @@ public class AuthUserRepositoryImpl implements AuthUserRepository{
             }
 
             @Override
-            public void onFailure(@NonNull Call<ApiResponse<?>> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable throwable) {
                 Log.e("RegisterUser_네트워크 오류", "Network error: " + throwable.getMessage(), throwable);
                 onError.run();          // 네트워크 오류 시 콜백 실행
             }
