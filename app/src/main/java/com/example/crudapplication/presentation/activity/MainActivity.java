@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(user -> {
             // DetailActivity로 이동하면서 데이터 전달
             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-            intent.putExtra("id", user.getId()); // id 값 추가
+            intent.putExtra("uuid", user.getUuid().toString()); // id 값 추가
             intent.putExtra("name", user.getName());
             intent.putExtra("phone", user.getPhone());
             intent.putExtra("address", user.getAddress());
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupLongClickListener() {
         adapter.setOnItemLongClickListener(user -> {
-            viewModel.deleteUser(user.getId(), () ->
+            viewModel.deleteUser(user.getUuid(), () ->
                     Toast.makeText(this, "삭제완료", Toast.LENGTH_SHORT).show()
             );
         });

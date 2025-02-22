@@ -1,27 +1,32 @@
 package com.example.crudapplication.data.model;
 
+import java.util.UUID;
+
 public class UserProfile {
-    private int id; // 데이터베이스에서 자동 생성
+    private UUID uuid; // 데이터베이스에서 자동 생성
     private String name;
     private String phone;
     private String address;
 
     public UserProfile() {
+        // UUID 자동 생성
+        this.uuid = UUID.randomUUID();
     }
 
     public UserProfile(String name, String phone, String address) {
+        this.uuid = UUID.randomUUID();
         this.name = name;
         this.phone = phone;
         this.address = address;
     }
 
     // Getter와 Setter
-    public int getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -54,7 +59,7 @@ public class UserProfile {
     @Override
     public String toString() {
         return "{" +
-                "\"id\":\"" + id + "\"," +
+                "\"id\":\"" + uuid + "\"," +
                 "\"name\":\"" + name + "\"," +
                 "\"phone\":\"" + phone + "\"," +
                 "\"address\":\"" + address + "\"" +

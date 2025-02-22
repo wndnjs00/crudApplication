@@ -1,20 +1,25 @@
 package com.example.crudapplication.data.model;
 
+import java.util.UUID;
+
 public class User {
-    private int id;
+    private UUID uuid;
     private String email;
     private String password;
     private String name;
     private String phone;
     private String address;
 
-
-    public int getId() {
-        return id;
+    public User() {
+        this.uuid = UUID.randomUUID();
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getEmail() {

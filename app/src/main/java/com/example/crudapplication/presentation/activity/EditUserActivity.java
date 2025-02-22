@@ -12,13 +12,15 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.crudapplication.R;
 import com.example.crudapplication.presentation.viewmodel.UserViewModel;
 
+import java.util.UUID;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class EditUserActivity extends AppCompatActivity {
     private EditText nameEdit, phoneEdit, addressEdit;
     private Button editButton;
-    private int userId;
+    private UUID userUuid;
     private UserViewModel viewModel;
 
     @Override
@@ -42,7 +44,7 @@ public class EditUserActivity extends AppCompatActivity {
     // 편집버튼 눌렀을떄 각각의 리사이클러뷰 아이템데이터 받아옴 / 받아와서 그 데이터를 뿌려줌
     private void getData(){
         Intent intent = getIntent();
-        userId = intent.getIntExtra("id", -1);  // id 값 가져오기 //id값이없으면 기본값을 -1로 지정
+        userUuid = UUID.fromString(intent.getStringExtra("id"));  // id 값 가져오기
         String name = intent.getStringExtra("name");
         String phone = intent.getStringExtra("phone");
         String address = intent.getStringExtra("address");
@@ -64,7 +66,7 @@ public class EditUserActivity extends AppCompatActivity {
             }
 
             viewModel = new ViewModelProvider(this).get(UserViewModel.class);
-            viewModel.updateUser(userId, name, phone , address, () -> {
+            viewModel.updateUser(userUuid, name, phone , address, () -> {
                 Toast.makeText(this, "데이터가 수정되었습니다", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

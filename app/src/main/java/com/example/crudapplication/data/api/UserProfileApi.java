@@ -1,5 +1,6 @@
 package com.example.crudapplication.data.api;
 
+import com.example.crudapplication.data.model.ApiResponse;
 import com.example.crudapplication.data.model.UserProfile;
 
 import retrofit2.Call;
@@ -11,18 +12,19 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserProfileApi {
     @GET("/user/all")
-    Call<List<UserProfile>> getAllUsers();
+    Call<ApiResponse<List<UserProfile>>> getAllUsers();
 
-    @POST("/user")
-    Call<Void> createUser(@Query("name") String name, @Query("phone") String phone, @Query("address") String address);
+    @POST("/user/new")
+    Call<ApiResponse<Void>> createUser(@Query("name") String name, @Query("phone") String phone, @Query("address") String address);
 
-    @PUT("/user/{id}")
-    Call<Void> updateUser(@Path("id") int id, @Query("name") String name, @Query("phone") String phone, @Query("address") String address);
+    @PUT("/user/{uuid}")
+    Call<ApiResponse<Void>> updateUser(@Path("uuid") UUID uuid, @Query("name") String name, @Query("phone") String phone, @Query("address") String address);
 
-    @DELETE("/user/{id}")
-    Call<Void> deleteUser(@Path("id") int id);
+    @DELETE("/user/{uuid}")
+    Call<ApiResponse<Void>> deleteUser(@Path("uuid") UUID uuid);
 }
 

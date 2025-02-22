@@ -3,6 +3,8 @@ package com.example.crudapplication.data.repository;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
+
+import com.example.crudapplication.data.model.ApiResponse;
 import com.example.crudapplication.data.model.UserProfile;
 import com.example.crudapplication.data.api.RetrofitService;
 import com.example.crudapplication.data.api.UserProfileApi;
@@ -10,6 +12,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.util.List;
+import java.util.UUID;
+
 import javax.inject.Singleton;
 
 // 데이터관리(비즈니스로직 관리)
@@ -24,11 +28,12 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public void AllFetchUsers(MutableLiveData<List<UserProfile>> liveData) {
-        api.getAllUsers().enqueue(new Callback<List<UserProfile>>() {
+        api.getAllUsers().enqueue(new Callback<ApiResponse<List<UserProfile>>>() {
             @Override
-            public void onResponse(@NonNull Call<List<UserProfile>> call, @NonNull Response<List<UserProfile>> response) {
-                if (response.isSuccessful()) {
-                    liveData.setValue(response.body()); // setValue로 LiveData 갱신 (setValue or postValue로 LiveData를통한 데이터 실시간관찰 가능)
+            public void onResponse(@NonNull Call<ApiResponse<List<UserProfile>>> call, @NonNull Response<ApiResponse<List<UserProfile>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<List<UserProfile>> apiResponse = response.body();
+                    liveData.setValue(apiResponse.getData()); // ApiResponse에서 data 추출  // setValue로 LiveData 갱신 (setValue or postValue로 LiveData를통한 데이터 실시간관찰 가능)
                     Log.d("전체 데이터조회 성공", "전체 데이터 조회 성공");
                 } else {
                     Log.e("전체 데이터조회 실패", "전체 데이터 조회 실패: " + response.code()+ "-" + response.message());
@@ -36,8 +41,8 @@ public class UserRepositoryImpl implements UserRepository{
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<UserProfile>> call, @NonNull Throwable t) {
-                Log.e("API 연결실패", t.getMessage());
+            public void onFailure(@NonNull Call<ApiResponse<List<UserProfile>>> call, @NonNull Throwable t) {
+                Log.e("API 연결실패1", t.getMessage());
             }
         });
     }
@@ -46,10 +51,10 @@ public class UserRepositoryImpl implements UserRepository{
     public void createUser(UserProfile user, Runnable onSuccess) {
         Log.d("요청 JSON", "UserProfile : " + user);
 
-        api.createUser(user.getName(), user.getPhone(), user.getAddress()).enqueue(new Callback<Void>() {
+        api.createUser(user.getName(), user.getPhone(), user.getAddress()).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     Log.d("데이터 저장 성공", "데이터 저장 성공");
                     onSuccess.run();
                 } else {
@@ -58,17 +63,17 @@ public class UserRepositoryImpl implements UserRepository{
             }
 
             @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Log.e("API 연결실패", t.getMessage());
+            public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable t) {
+                Log.e("API 연결실패2", t.getMessage());
             }
         });
     }
 
     @Override
-    public void updateUser(int id, String name, String phone, String address, Runnable onSuccess) {
-        api.updateUser(id, name , phone, address).enqueue(new Callback<Void>() {
+    public void updateUser(UUID uuid, String name, String phone, String address, Runnable onSuccess) {
+        api.updateUser(uuid, name , phone, address).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+            public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
                 if (response.isSuccessful()){
                     Log.d("데이터 수정 성공", "데이터 수정 성공");
                     onSuccess.run();
@@ -78,18 +83,18 @@ public class UserRepositoryImpl implements UserRepository{
             }
 
             @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Log.e("API 연결실패", t.getMessage());
+            public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable t) {
+                Log.e("API 연결실패3", t.getMessage());
             }
         });
     }
 
     @Override
-    public void deleteUser(int id, Runnable onSuccess) {
-        api.deleteUser(id).enqueue(new Callback<Void>() {
+    public void deleteUser(UUID uuid, Runnable onSuccess) {
+        api.deleteUser(uuid).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     Log.d("데이터 삭제 성공", "데이터 삭제 성공");
                     onSuccess.run();
                 } else {
@@ -98,8 +103,8 @@ public class UserRepositoryImpl implements UserRepository{
             }
 
             @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Log.e("API 연결실패", t.getMessage());
+            public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable t) {
+                Log.e("API 연결실패4", t.getMessage());
             }
         });
     }

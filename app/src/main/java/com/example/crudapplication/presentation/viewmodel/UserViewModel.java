@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel;
 import com.example.crudapplication.data.model.UserProfile;
 import com.example.crudapplication.data.repository.UserRepository;
 import java.util.List;
+import java.util.UUID;
+
 import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
@@ -38,15 +40,15 @@ public class UserViewModel extends ViewModel {
         });
     }
 
-    public void updateUser(int id, String name, String phone, String address, Runnable onSuccess){
-        userRepository.updateUser(id, name, phone, address, () -> {
+    public void updateUser(UUID uuid, String name, String phone, String address, Runnable onSuccess){
+        userRepository.updateUser(uuid, name, phone, address, () -> {
             AllFetchUsers();    //데이터 새로고침
             onSuccess.run();
         });
     }
 
-    public void deleteUser(int id, Runnable onSuccess) {
-        userRepository.deleteUser(id, () -> {
+    public void deleteUser(UUID uuid, Runnable onSuccess) {
+        userRepository.deleteUser(uuid, () -> {
             AllFetchUsers();    //데이터 새로고침
             onSuccess.run();
         });

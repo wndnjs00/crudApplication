@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class DetailActivity extends AppCompatActivity {
     private TextView tvName, tvPhone, tvAddress;
-    private int userId; //id값 저장을 위한
+    private String uuidString; //id값 저장을 위한
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class DetailActivity extends AppCompatActivity {
     // MainActivity에서 전달한 데이터받아와서 뿌려줌
     private void getData(){
         Intent intent = getIntent();
-        userId = intent.getIntExtra("id", -1); // id 값 가져오기
+        uuidString = intent.getStringExtra("uuid");
         String name = intent.getStringExtra("name");
         String phone = intent.getStringExtra("phone");
         String address = intent.getStringExtra("address");
@@ -60,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
         editButton.setOnClickListener(v -> {
             // EditUserActivity로 이동하면서 데이터 전달
             Intent intent = new Intent(DetailActivity.this, EditUserActivity.class);
-            intent.putExtra("id", userId);  // id 값 전달
+            intent.putExtra("id", uuidString);  // id 값 전달
             intent.putExtra("name", tvName.getText().toString());
             intent.putExtra("phone", tvPhone.getText().toString());
             intent.putExtra("address", tvAddress.getText().toString());
