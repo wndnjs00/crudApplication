@@ -3,6 +3,7 @@ package com.example.crudapplication.presentation.activity;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.crudapplication.R;
 import com.example.crudapplication.presentation.adpater.UserAdapter;
+import com.example.crudapplication.presentation.viewmodel.AuthViewModel;
 import com.example.crudapplication.presentation.viewmodel.UserViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -17,7 +19,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     private UserViewModel viewModel;
+    private AuthViewModel authViewModel;
     private UserAdapter adapter;
+    private TextView logoutText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setupViewModel();
         setupLongClickListener();
         setupClickListener();
+        setupLogoutListener();
 
         viewModel.AllFetchUsers();  //데이터 새로고침(전체 데이터조회)
     }
@@ -85,4 +90,25 @@ public class MainActivity extends AppCompatActivity {
             );
         });
     }
+
+    private void setupLogoutListener(){
+        logoutText = findViewById(R.id.logout_text);
+
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+
+        logoutText.setOnClickListener(v -> {
+            String accessToken = authViewModel.getStoredToken();   // Access Token 가져오기
+
+            authViewModel.logout(accessToken, () -> {
+                Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish(); // 현재 액티비티 종료
+            }, () -> {
+                Toast.makeText(this, "로그아웃 실패", Toast.LENGTH_SHORT).show();
+            });
+        });
+    }
+
+
 }

@@ -1,7 +1,10 @@
 package com.example.crudapplication.data.repository;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
+
+import android.os.Build;
 import android.util.Log;
 
 import com.example.crudapplication.data.dto.UserProfileRequestDto;
@@ -15,6 +18,7 @@ import retrofit2.Response;
 import java.util.List;
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 // 데이터관리(비즈니스로직 관리)
@@ -24,11 +28,12 @@ public class UserRepositoryImpl implements UserRepository{
     private final UserProfileApi api;
 
     public UserRepositoryImpl(UserProfileApi api) {
-        this.api = RetrofitService.getInstance().create(UserProfileApi.class);
+        this.api = api;
     }
 
     @Override
     public void AllFetchUsers(MutableLiveData<List<UserProfile>> liveData) {
+
         api.getAllUsers().enqueue(new Callback<ApiResponse<List<UserProfile>>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<List<UserProfile>>> call, @NonNull Response<ApiResponse<List<UserProfile>>> response) {
@@ -74,6 +79,7 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public void updateUser(UUID uuid, String name, String phone, String address, Runnable onSuccess) {
         UserProfileRequestDto userProfileRequestDto = new UserProfileRequestDto(name, phone, address);
+
         api.updateUser(uuid, userProfileRequestDto).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
@@ -94,6 +100,7 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public void deleteUser(UUID uuid, Runnable onSuccess) {
+
         api.deleteUser(uuid).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {

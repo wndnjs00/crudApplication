@@ -13,6 +13,7 @@ import com.example.crudapplication.data.local.TokenManager;
 import com.example.crudapplication.data.model.ApiResponse;
 import com.example.crudapplication.data.model.User;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -63,44 +64,30 @@ public class AuthUserRepositoryImpl implements AuthUserRepository{
         LoginRequestDto requestDto = new LoginRequestDto(email, password);
 
         // api호출
-        api.loginUser(requestDto).enqueue(new Callback<ApiResponse<Map<String, Object>>>() {
+        api.loginUser(requestDto).enqueue(new Callback<ApiResponse<Map<String, String>>>() {
             @Override
-            public void onResponse(@NonNull Call<ApiResponse<Map<String, Object>>> call, @NonNull Response<ApiResponse<Map<String, Object>>> response) {
+            public void onResponse(@NonNull Call<ApiResponse<Map<String, String>>> call, @NonNull Response<ApiResponse<Map<String, String>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
-                    // 서버 응답에서 토큰과 user데이터 추출
-                    ApiResponse<Map<String, Object>> apiResponse = response.body();
-                    Map<String, Object> data = apiResponse.getData();
+                    // 서버 응답에서 토큰추출
+                    Map<String, String> tokens = response.body().getData();
+                    String accessToken = tokens.get("accessToken");
+                    String refreshToken = tokens.get("refreshToken");
 
-                    // Map을 User 객체로 변환
-                    if (data != null) {
-                        String token = (String) data.get("token");
-                        Map<String, Object> userMap = (Map<String, Object>) data.get("user");
+                    // 토큰 저장
+                    tokenManager.saveTokens(accessToken, refreshToken);
 
-                        User user = new User();
-                        user.setEmail((String) userMap.get("email"));
-                        user.setName((String) userMap.get("name"));
-                        user.setPhone((String) userMap.get("phone"));
-                        user.setAddress((String) userMap.get("address"));
-
-                        // 토큰 저장
-                        tokenManager.saveToken(token);
-
-                        // user 정보를 LiveData로 전달
-                        authLivedata.setValue(user);  // 즉,데이터가 성공적으로 반환되면 LiveData로 설정된값(authLivedata값) 업데이트
-                        Log.d("LoginUser_성공", "Login successful: " + user);
+                    // User 객체 생성 및 LiveData 업데이트
+                    authLivedata.setValue(new User(email, password, null, null, null)); // User 객체 업데이트 // 즉,데이터가 성공적으로 반환되면 LiveData로 설정된값(authLivedata값) 업데이트
+                    Log.d("LoginUser_성공", "Login successful");
                     } else {
                         Log.e("LoginUser_실패", "Login failed: Invalid data");
                         onError.run();  // 로그인 실패 콜백 실행  //서버가 응답을 제대로 반환하지 않을시에 LiveData값 업데이트되지 않고, onError.run()실행
                     }
-                } else {
-                    Log.e("LoginUser_실패2", "Login failed: " + response.code());
-                    onError.run();
-                }
             }
 
             @Override
-            public void onFailure(@NonNull Call<ApiResponse<Map<String, Object>>> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<ApiResponse<Map<String, String>>> call, @NonNull Throwable throwable) {
                 Log.e("LoginUser_네트워크오류", "Network error: " + throwable.getMessage(), throwable);
                 onError.run();  // 네트워크 오류 콜백 실행
             }
@@ -109,10 +96,70 @@ public class AuthUserRepositoryImpl implements AuthUserRepository{
 
     // 로그아웃 메서드
     @Override
-    public void logout() {
-        Log.d("Logout", "Clearing token");
-        tokenManager.clearToken();  // 저장된 토큰 삭제
+    public void logout(String accessToken, Runnable onSuccess, Runnable onError) {
+        api.logout("Bearer " + accessToken).enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful()){
+                    // 로그아웃 성공시 토큰 삭제
+                    tokenManager.clearToken();
+                    onSuccess.run();
+                } else if (response.code() == 401 || response.code() == 403) {
+                    Log.e("LogoutServer", "Access token expired. Attempting refresh.");
+                    refreshTokenAndRetryLogout(onSuccess, onError);
+                } else {
+                    Log.e("LogoutServer", "Failed to logout: " + response.code());
+                    onError.run();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable throwable) {
+                Log.e("LogoutServer", "Network error: " + throwable.getMessage(), throwable);
+                onError.run();
+            }
+        });
     }
+
+
+    private void refreshTokenAndRetryLogout(Runnable onSuccess, Runnable onError) {
+        String refreshToken = tokenManager.getRefreshToken();
+        if (refreshToken == null) {
+            Log.e("LogoutServer", "No refresh token available. Logout failed.");
+            onError.run();
+            return;
+        }
+
+        Map<String, String> body = new HashMap<>();
+        body.put("refreshToken", refreshToken);
+
+        api.refreshToken(body).enqueue(new Callback<ApiResponse<Map<String, String>>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Map<String, String>>> call, @NonNull Response<ApiResponse<Map<String, String>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Map<String, String> tokens = response.body().getData();
+                    String newAccessToken = tokens.get("accessToken");
+                    String newRefreshToken = tokens.get("refreshToken");
+
+                    // 새로운 토큰 저장
+                    tokenManager.saveTokens(newAccessToken, newRefreshToken);
+
+                    // 새 토큰으로 로그아웃 재시도
+                    logout(newAccessToken, onSuccess, onError);
+                } else {
+                    Log.e("LogoutServer", "Failed to refresh token for logout.");
+                    onError.run();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Map<String, String>>> call, @NonNull Throwable throwable) {
+                Log.e("LogoutServer", "Network error during token refresh: " + throwable.getMessage(), throwable);
+                onError.run();
+            }
+        });
+    }
+
 
     // 로그인 상태 확인
     @Override
@@ -124,6 +171,6 @@ public class AuthUserRepositoryImpl implements AuthUserRepository{
     // 저장된 토큰 조회
     @Override
     public String getStoredToken() {
-        return tokenManager.getToken(); // 저장된 토큰 반환
+        return tokenManager.getAccessToken(); // 저장된 토큰 반환
     }
 }

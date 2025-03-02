@@ -37,9 +37,9 @@ public class AuthViewModel extends ViewModel {
     }
 
     // 로그아웃
-    public void logout() {
+    public void logout(String accessToken, Runnable onSuccess, Runnable onError) {
         // 토큰 삭제
-        authUserRepository.logout();
+        authUserRepository.logout(accessToken, onSuccess, onError);
     }
 
     public boolean isLoggedIn() {

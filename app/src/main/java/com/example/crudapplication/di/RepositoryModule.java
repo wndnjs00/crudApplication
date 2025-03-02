@@ -1,6 +1,9 @@
 package com.example.crudapplication.di;
 
 import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.crudapplication.data.api.AuthApi;
 import com.example.crudapplication.data.api.RetrofitService;
@@ -16,6 +19,7 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
+import retrofit2.Retrofit;
 
 @Module
 @InstallIn(SingletonComponent.class)

@@ -18,6 +18,17 @@ public class User {
         return uuid;
     }
 
+    // 매개변수를 받는 생성자
+    public User(String email, String password, String name, String phone, String address) {
+        this.uuid = UUID.randomUUID();
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+    }
+
+
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
