@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
-    private Button loginButton;
+    private Button loginButton, registerButton;
     private AuthViewModel authViewModel;
 
     @Override
@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
         initializeViews();
         setupLoginButtonListener();
+        setUpRegisterButtonListener();
     }
 
     // UI 요소 초기화
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.et_email2);
         passwordEditText = findViewById(R.id.et_password2);
         loginButton = findViewById(R.id.btn_login);
+        registerButton = findViewById(R.id.btn_register);
     }
 
     private void setupLoginButtonListener(){
@@ -62,6 +64,14 @@ public class LoginActivity extends AppCompatActivity {
             // onError 호출됐을때 실행     // () -> 는 Runnable onError호출시 실행
             authViewModel.loginUser(email, password, () ->
                     Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show());
+        });
+    }
+
+
+    private void setUpRegisterButtonListener(){
+        registerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 }

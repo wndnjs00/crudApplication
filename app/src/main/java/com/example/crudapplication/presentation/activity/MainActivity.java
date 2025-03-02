@@ -97,18 +97,10 @@ public class MainActivity extends AppCompatActivity {
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
         logoutText.setOnClickListener(v -> {
-            String accessToken = authViewModel.getStoredToken();   // Access Token 가져오기
-
-            authViewModel.logout(accessToken, () -> {
-                Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish(); // 현재 액티비티 종료
-            }, () -> {
-                Toast.makeText(this, "로그아웃 실패", Toast.LENGTH_SHORT).show();
-            });
+            authViewModel.logout(); //로그아웃 처리
+            Intent intent = new Intent(MainActivity.this , LoginActivity.class);
+            startActivity(intent);
+            finish(); // 현재 액티비티 종료
         });
     }
-
-
 }

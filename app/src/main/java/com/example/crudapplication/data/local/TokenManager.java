@@ -71,6 +71,6 @@ public class TokenManager {
     // 토큰 존재 여부 확인 메서드
     public boolean hasToken() {
         // Token이 null이 아니면 true 반환 -> Token이 null이 아니면 토큰이 존재한다고 간주
-        return getAccessToken() != null && getRefreshToken() != null;
+        return getAccessToken() != null;
     }
 }
