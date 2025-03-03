@@ -2,6 +2,7 @@ package com.example.crudapplication.data.local;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
@@ -33,6 +34,7 @@ public class AuthAuthenticator implements Authenticator {
 
     @Override
     public Request authenticate(Route route, Response response) throws IOException {
+
         String refreshToken = tokenManager.getRefreshToken();
 
         if (refreshToken == null) {
@@ -50,11 +52,6 @@ public class AuthAuthenticator implements Authenticator {
         if (tokenResponse.isSuccessful() && tokenResponse.body() != null) {
             ApiResponse<Map<String, String>> apiResponse = tokenResponse.body();
 
-//            if ("400".equals(apiResponse.getStatus())) {
-//                handleLogout();
-//                return null;
-//            }
-
             Map<String, String> data = apiResponse.getData();
 
             String newAccessToken = data.get("accessToken");
@@ -67,8 +64,9 @@ public class AuthAuthenticator implements Authenticator {
             return response.request().newBuilder()
                     .header("Authorization", "Bearer " + newAccessToken)
                     .build();
-        }else{
+        } else {
             handleLogout(); // Refresh Token도 만료된 경우
+            // 로그 추가: Refresh Token 만료 또는 실패
             return null;
         }
     }
@@ -79,6 +77,10 @@ public class AuthAuthenticator implements Authenticator {
         // 로그아웃 처리: 사용자에게 알림
         Context context = HiltApplication.getContext(); // 글로벌 컨텍스트 가져오기
         Toast.makeText(context, "토큰이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
     }
 }
 

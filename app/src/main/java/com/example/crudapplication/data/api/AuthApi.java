@@ -26,7 +26,7 @@ public interface AuthApi {
     @POST("/auth/refresh")
     Call<ApiResponse<Map<String, String>>> refreshToken(@Body Map<String, String> body);
 
-    // 로그아웃
-    @POST("/auth/logout")
-    Call<ApiResponse<Void>> logout(@Header("Authorization") String accessToken);
+//    // 로그아웃
+//    @POST("/auth/logout")
+//    Call<ApiResponse<Void>> logout(@Header("Authorization") String accessToken);
 }

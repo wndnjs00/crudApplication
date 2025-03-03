@@ -35,7 +35,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitService {
     private static Retrofit retrofit;
     private static final String BASE_URL = "http://10.0.2.2:8080/";   // AVD(에뮬레이터)로만 테스트할때는 localhost대신 10.0.2.2   // 실제 기기로 테스트할땐 내IP주소 넣기
-
+    private static TokenManager tokenManager;
+    private static AuthApi authApi;
 
     public static Retrofit getInstance(){
         if (retrofit == null){
