@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setupLongClickListener();
         setupClickListener();
         setupLogoutListener();
+        observeTokenExpiration();
 
         viewModel.AllFetchUsers();  //데이터 새로고침(전체 데이터조회)
     }
@@ -103,4 +104,17 @@ public class MainActivity extends AppCompatActivity {
             finish(); // 현재 액티비티 종료
         });
     }
+
+    private void observeTokenExpiration() {
+        authViewModel.getTokenExpiredLiveData().observe(this, isExpired -> {
+            if (Boolean.TRUE.equals(isExpired)) {
+                Toast.makeText(this, "토큰이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
 }

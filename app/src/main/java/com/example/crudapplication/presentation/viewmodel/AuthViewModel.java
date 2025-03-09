@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.crudapplication.data.local.TokenManager;
 import com.example.crudapplication.data.model.User;
 import com.example.crudapplication.data.repository.AuthUserRepository;
 
@@ -15,14 +16,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class AuthViewModel extends ViewModel {
     private final AuthUserRepository authUserRepository;
     private final MutableLiveData<User> authUserList = new MutableLiveData<>();
+    private final TokenManager tokenManager;
+
 
     @Inject
-    public AuthViewModel(AuthUserRepository authUserRepository) {
+    public AuthViewModel(AuthUserRepository authUserRepository, TokenManager tokenManager) {
         this.authUserRepository = authUserRepository;
+        this.tokenManager = tokenManager;
     }
 
     public LiveData<User> getAuthUserList(){
         return authUserList;
+    }
+
+    public LiveData<Boolean> getTokenExpiredLiveData() {
+        return tokenManager.getTokenExpiredLiveData();
     }
 
     public void registerUser(String email, String password, String name, String phone, String address, Runnable onSuccess, Runnable onError){

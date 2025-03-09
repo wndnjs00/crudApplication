@@ -43,7 +43,7 @@ public class AuthAuthenticator implements Authenticator {
         String refreshToken = tokenManager.getRefreshToken();
 
         if (refreshToken == null) {
-            handleLogout(); // Refresh Token이 없으면 로그아웃 처리
+            tokenManager.notifyTokenExpired(); // 토큰 만료 알림 // Refresh Token이 없으면 로그아웃 처리
             return null; // Refresh Token이 없으면 재인증 불가능
         }
 
@@ -74,28 +74,16 @@ public class AuthAuthenticator implements Authenticator {
                     .header("Authorization", "Bearer " + newAccessToken)
                     .build();
         } else {
-            handleLogout(); // Refresh Token도 만료된 경우
-            // 로그 추가: Refresh Token 만료 또는 실패
+            tokenManager.notifyTokenExpired(); // 갱신 실패 시 알림
             return null;
         }
     }catch(Exception e){
             Log.e("AuthAuthenticator", "Error refreshing token: " + e.getMessage(), e);
+            tokenManager.notifyTokenExpired(); // 예외 발생 시 알림
             return null;
     } finally{
             call.cancel(); // Call 객체 정리
         }
-    }
-
-    private void handleLogout() {
-        tokenManager.clearToken(); // 토큰 삭제
-
-        // 로그아웃 처리: 사용자에게 알림
-        Context context = HiltApplication.getContext(); // 글로벌 컨텍스트 가져오기
-        Toast.makeText(context, "토큰이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
-
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        context.startActivity(intent);
     }
 }
 

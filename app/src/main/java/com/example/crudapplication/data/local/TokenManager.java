@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.crudapplication.HiltApplication;
 import com.example.crudapplication.presentation.activity.LoginActivity;
 
@@ -21,6 +24,8 @@ public class TokenManager {
     private static final String KEY_REFRESH_TOKEN = "refresh_token";
     // SharedPreferences 인스턴스 선언(final로 선언하여 한 번 초기화된 후 변경 불가능하도록)
     private final SharedPreferences prefs;
+    //LiveData를 사용해 토큰 만료 상태를 관찰 가능하도록 변경하기위해
+    private final MutableLiveData<Boolean> tokenExpired = new MutableLiveData<>();
 
     // Context를 주입받아 SharedPreferences 초기화
     @Inject  // Hilt를 통한 의존성 주입
@@ -67,17 +72,20 @@ public class TokenManager {
              .remove(KEY_ACCESS_TOKEN)
              .remove(KEY_REFRESH_TOKEN)
              .apply();
-
-        // 앱의 상태를 초기화하고 로그인 화면으로 이동
-        Context context = HiltApplication.getContext(); // 글로벌 컨텍스트 가져오기
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        context.startActivity(intent);
     }
 
     // 토큰 존재 여부 확인 메서드
     public boolean hasToken() {
         // Token이 null이 아니면 true 반환 -> Token이 null이 아니면 토큰이 존재한다고 간주
         return getAccessToken() != null;
+    }
+
+    public void notifyTokenExpired() {
+        tokenExpired.postValue(true); // 토큰 만료 상태 전달
+    }
+
+    // LiveData를 사용해 토큰 만료 상태를 관찰 가능하도록
+    public LiveData<Boolean> getTokenExpiredLiveData() {
+        return tokenExpired;
     }
 }
