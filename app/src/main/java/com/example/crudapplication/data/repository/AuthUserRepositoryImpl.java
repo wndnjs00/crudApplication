@@ -80,8 +80,8 @@ public class AuthUserRepositoryImpl implements AuthUserRepository{
                     // User 객체 생성 및 LiveData 업데이트
                     authLivedata.setValue(new User(email, password, null, null, null)); // User 객체 업데이트 // 즉,데이터가 성공적으로 반환되면 LiveData로 설정된값(authLivedata값) 업데이트
                     Log.d("LoginUser_성공", "Login successful");
-                    Log.d("accessToken", "Using Access Token: " + accessToken);
-                    Log.d("refreshToken", "New Refresh Token: " + refreshToken);
+                    Log.d("accessToken임", "Access Token임: " + accessToken);
+                    Log.d("refreshToken임", "Refresh Token임: " + refreshToken);
 
                     } else {
                         Log.e("LoginUser_실패", "Login failed: Invalid data");

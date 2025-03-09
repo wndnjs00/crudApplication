@@ -3,6 +3,7 @@ package com.example.crudapplication.data.local;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.crudapplication.HiltApplication;
 import com.example.crudapplication.presentation.activity.LoginActivity;
@@ -38,6 +39,10 @@ public class TokenManager {
              .putString(KEY_ACCESS_TOKEN, accessToken)
              .putString(KEY_REFRESH_TOKEN, refreshToken)
              .apply();
+
+        // 저장된 토큰 확인 로그 추가
+        Log.d("TokenManager", "Access Token: " + getAccessToken());
+        Log.d("TokenManager", "Refresh Token: " + getRefreshToken());
     }
 
     // 저장된 ACCESS_TOKEN 조회 메서드
@@ -49,7 +54,9 @@ public class TokenManager {
     // 저장된 REFRESH_TOKEN 조회 메서드
     public String getRefreshToken(){
         // 저장된 토큰 반환, 없으면 null 반환
-        return prefs.getString(KEY_REFRESH_TOKEN, null);
+        String refreshToken = prefs.getString(KEY_REFRESH_TOKEN, null);
+        Log.d("TokenManager", "Current Refresh Token: " + refreshToken);
+        return refreshToken;
     }
 
     // 토큰 삭제 메서드 (로그아웃 시 사용)

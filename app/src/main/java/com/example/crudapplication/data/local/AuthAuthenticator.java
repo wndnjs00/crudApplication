@@ -35,6 +35,11 @@ public class AuthAuthenticator implements Authenticator {
     @Override
     public Request authenticate(Route route, Response response) throws IOException {
 
+        if (authApi == null) {
+            Log.e("AuthAuthenticator", "AuthApi is null");
+            return null;
+        }
+
         String refreshToken = tokenManager.getRefreshToken();
 
         if (refreshToken == null) {
@@ -47,15 +52,19 @@ public class AuthAuthenticator implements Authenticator {
         body.put("refreshToken", refreshToken);
 
         Call<ApiResponse<Map<String, String>>> call = authApi.refreshToken(body);
+        try{
+
         retrofit2.Response<ApiResponse<Map<String, String>>> tokenResponse = call.execute();
 
         if (tokenResponse.isSuccessful() && tokenResponse.body() != null) {
-            ApiResponse<Map<String, String>> apiResponse = tokenResponse.body();
+            Map<String, String> tokens = tokenResponse.body().getData();
 
-            Map<String, String> data = apiResponse.getData();
+            String newAccessToken = tokens.get("accessToken");
+            String newRefreshToken = tokens.get("refreshToken");
 
-            String newAccessToken = data.get("accessToken");
-            String newRefreshToken = data.get("refreshToken");
+            // 로그 추가: 새로 발급받은 토큰 확인
+            Log.d("AuthAuthenticator", "New Access Token: " + newAccessToken);
+            Log.d("AuthAuthenticator", "New Refresh Token: " + newRefreshToken);
 
             // 새로운 토큰 저장
             tokenManager.saveTokens(newAccessToken, newRefreshToken);
@@ -68,6 +77,12 @@ public class AuthAuthenticator implements Authenticator {
             handleLogout(); // Refresh Token도 만료된 경우
             // 로그 추가: Refresh Token 만료 또는 실패
             return null;
+        }
+    }catch(Exception e){
+            Log.e("AuthAuthenticator", "Error refreshing token: " + e.getMessage(), e);
+            return null;
+    } finally{
+            call.cancel(); // Call 객체 정리
         }
     }
 

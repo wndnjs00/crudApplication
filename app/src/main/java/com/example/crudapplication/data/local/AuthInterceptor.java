@@ -21,20 +21,18 @@ public class AuthInterceptor implements Interceptor {
 
         // Authorization 헤더 추가
         if (accessToken != null) {
-            Log.d("AuthInterceptor", "Using Access Token: " + accessToken);
 
             Request newRequest = originalRequest.newBuilder()
                     .header("Authorization", "Bearer " + accessToken)
                     .build();
 
+            // 응답 처리: 401 응답은 Authenticator로 전달
             Response response = chain.proceed(newRequest);
 
-            // 응답에 새로운 Access Token이 있으면 갱신
-            if (response.header("Authorization") != null) {
-                String newAccessToken = response.header("Authorization").replace("Bearer ", "");
-                Log.d("AuthInterceptor", "New Access Token received: " + newAccessToken);
-                tokenManager.saveTokens(newAccessToken, tokenManager.getRefreshToken());
+            if (response.code() == 401) {
+                Log.d("AuthInterceptor", "Access Token expired, passing to Authenticator.");
             }
+
             return response;
         }
         return chain.proceed(originalRequest);
