@@ -81,7 +81,7 @@ public class TokenManager {
     }
 
     public void notifyTokenExpired() {
-        tokenExpired.postValue(true); // 토큰 만료 상태 전달
+        tokenExpired.postValue(true); // 토큰 만료 상태를 LiveData로 전달
     }
 
     // LiveData를 사용해 토큰 만료 상태를 관찰 가능하도록

@@ -42,6 +42,7 @@ public class AuthAuthenticator implements Authenticator {
 
         String refreshToken = tokenManager.getRefreshToken();
 
+        // Refresh Token이 없을 경우 토큰 만료 상태를 전달
         if (refreshToken == null) {
             tokenManager.notifyTokenExpired(); // 토큰 만료 알림 // Refresh Token이 없으면 로그아웃 처리
             return null; // Refresh Token이 없으면 재인증 불가능
@@ -56,9 +57,11 @@ public class AuthAuthenticator implements Authenticator {
 
         retrofit2.Response<ApiResponse<Map<String, String>>> tokenResponse = call.execute();
 
+        // 새로운 토큰이 성공적으로 발급된 경우
         if (tokenResponse.isSuccessful() && tokenResponse.body() != null) {
             Map<String, String> tokens = tokenResponse.body().getData();
 
+            // 새로 발급받은 Access Token 및 Refresh Token 저장
             String newAccessToken = tokens.get("accessToken");
             String newRefreshToken = tokens.get("refreshToken");
 
@@ -74,15 +77,17 @@ public class AuthAuthenticator implements Authenticator {
                     .header("Authorization", "Bearer " + newAccessToken)
                     .build();
         } else {
-            tokenManager.notifyTokenExpired(); // 갱신 실패 시 알림
+            // 토큰 갱신 실패시, 토큰 만료 상태 알림
+            tokenManager.notifyTokenExpired();
             return null;
         }
     }catch(Exception e){
             Log.e("AuthAuthenticator", "Error refreshing token: " + e.getMessage(), e);
-            tokenManager.notifyTokenExpired(); // 예외 발생 시 알림
+            // 예외 발생 시 토큰 만료 상태 알림
+            tokenManager.notifyTokenExpired();
             return null;
     } finally{
-            call.cancel(); // Call 객체 정리
+            call.cancel(); // 네트워크 요청 정리
         }
     }
 }

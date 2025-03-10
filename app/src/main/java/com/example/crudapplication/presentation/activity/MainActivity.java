@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         authViewModel.getTokenExpiredLiveData().observe(this, isExpired -> {
             if (Boolean.TRUE.equals(isExpired)) {
                 Toast.makeText(this, "토큰이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
