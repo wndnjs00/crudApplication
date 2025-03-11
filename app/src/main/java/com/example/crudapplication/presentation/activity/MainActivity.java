@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.crudapplication.R;
 import com.example.crudapplication.presentation.adpater.UserAdapter;
 import com.example.crudapplication.presentation.viewmodel.AuthViewModel;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private AuthViewModel authViewModel;
     private UserAdapter adapter;
     private TextView logoutText;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setupClickListener();
         setupLogoutListener();
         observeTokenExpiration();
+        setupSwipeRefreshLayout();
 
         viewModel.AllFetchUsers();  //데이터 새로고침(전체 데이터조회)
     }
@@ -48,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
     private void clickFabButton() {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> IntentAddUserActivity());
+    }
+
+    private void setupSwipeRefreshLayout() {
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            viewModel.AllFetchUsers();
+            swipeRefreshLayout.setRefreshing(false); // 새로고침 완료 후 로딩 종료
+        });
     }
 
     private void IntentAddUserActivity() {
