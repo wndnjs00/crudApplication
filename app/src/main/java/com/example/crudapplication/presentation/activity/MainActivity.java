@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.crudapplication.R;
+import com.example.crudapplication.databinding.ActivityMainBinding;
 import com.example.crudapplication.presentation.adpater.UserAdapter;
 import com.example.crudapplication.presentation.viewmodel.AuthViewModel;
 import com.example.crudapplication.presentation.viewmodel.UserViewModel;
@@ -20,16 +21,19 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+    private ActivityMainBinding binding; // View Binding 객체 선언
     private UserViewModel viewModel;
     private AuthViewModel authViewModel;
     private UserAdapter adapter;
-    private TextView logoutText;
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // View Binding 초기화
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         clickFabButton();
         setupRecyclerView();
@@ -50,16 +54,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clickFabButton() {
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> IntentAddUserActivity());
+        binding.fab.setOnClickListener(v -> IntentAddUserActivity());
     }
 
     private void setupSwipeRefreshLayout() {
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> {
             viewModel.AllFetchUsers();
-            swipeRefreshLayout.setRefreshing(false); // 새로고침 완료 후 로딩 종료
+
+            // 새로고침 완료 후 로딩 상태 해제
+            binding.swipeRefreshLayout.setRefreshing(false);
         });
     }
 
@@ -69,10 +73,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         adapter = new UserAdapter();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setAdapter(adapter);
     }
 
     // viewModel을 통해 getUserList을 실시간으로 observe해서 adapter에 데이터를 뿌려줌 (LiveData를 통해 변경되는 데이터를 실시간으로 관찰)
@@ -106,11 +109,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupLogoutListener(){
-        logoutText = findViewById(R.id.logout_text);
 
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
-        logoutText.setOnClickListener(v -> {
+        binding.logoutText.setOnClickListener(v -> {
             authViewModel.logout(); //로그아웃 처리
             Intent intent = new Intent(MainActivity.this , LoginActivity.class);
             startActivity(intent);

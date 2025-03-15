@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
+
 plugins {
     alias(libs.plugins.android.application)
     id("org.jetbrains.kotlin.android") // Kotlin 플러그인 추가
@@ -35,11 +37,16 @@ android {
     kotlinOptions {
         jvmTarget = "1.8" // Kotlin JVM 타겟 설정
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 kapt {
     correctErrorTypes = true
 }
+
 
 dependencies {
 

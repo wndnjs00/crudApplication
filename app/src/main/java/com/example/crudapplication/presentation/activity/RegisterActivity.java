@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.crudapplication.R;
+import com.example.crudapplication.databinding.ActivityRegisterBinding;
 import com.example.crudapplication.presentation.viewmodel.AuthViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -18,9 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class RegisterActivity extends AppCompatActivity {
-    private EditText emailEdit, passwordEdit, nameEdit, phoneEdit, addressEdit;
-    private Button registerButton;
-    private TextView loginText;
+    private ActivityRegisterBinding binding;
     private AuthViewModel authViewModel;
 
     @Override
@@ -33,25 +32,20 @@ public class RegisterActivity extends AppCompatActivity {
         setupLoginActivity();
     }
 
-    // UI요소 초기화
+    // View Binding 초기화
     private void initializeViews(){
-        emailEdit = findViewById(R.id.et_email);
-        passwordEdit = findViewById(R.id.et_password);
-        nameEdit = findViewById(R.id.et_name);
-        phoneEdit = findViewById(R.id.et_phone);
-        addressEdit = findViewById(R.id.et_address);
-        loginText = findViewById(R.id.tv_login);
-        registerButton = findViewById(R.id.btn_register);
+        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 
     private void setupRegisterButtonListener() {
-        registerButton.setOnClickListener(v -> {
+        binding.btnRegister.setOnClickListener(v -> {
             // 입력값 가져오기
-            String email = emailEdit.getText().toString();
-            String password = passwordEdit.getText().toString();
-            String name = nameEdit.getText().toString();
-            String phone = phoneEdit.getText().toString();
-            String address = addressEdit.getText().toString();
+            String email = binding.etEmail.getText().toString().trim();
+            String password = binding.etPassword.getText().toString().trim();
+            String name = binding.etName.getText().toString().trim();
+            String phone = binding.etPhone.getText().toString().trim();
+            String address = binding.etAddress.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty() || name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
                 Toast.makeText(this, "모든 필드를 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -73,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setupLoginActivity(){
-        loginText.setOnClickListener(v -> {
+        binding.tvLogin.setOnClickListener(v -> {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });

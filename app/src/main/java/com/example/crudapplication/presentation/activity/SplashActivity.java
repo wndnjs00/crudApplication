@@ -6,11 +6,14 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.crudapplication.R;
 import com.example.crudapplication.data.local.TokenManager;
+import com.example.crudapplication.databinding.ActivitySplashBinding;
+
 import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class SplashActivity extends AppCompatActivity {
+    private ActivitySplashBinding binding;
     
     @Inject 
     // TokenManager 인스턴스를 Hilt를 통해 주입받음
@@ -20,6 +23,10 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        // View Binding 초기화
+        binding = ActivitySplashBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         setDelay(2000); // 2초 지연 (2초(2000ms) 후에 실행)
     }

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.crudapplication.R;
+import com.example.crudapplication.databinding.ActivityAddUserBinding;
 import com.example.crudapplication.presentation.viewmodel.UserViewModel;
 
 import java.util.UUID;
@@ -18,8 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class EditUserActivity extends AppCompatActivity {
-    private EditText nameEdit, phoneEdit, addressEdit;
-    private Button editButton;
+    private ActivityAddUserBinding binding; // View Binding 객체 재사용
     private UUID userUuid;
     private UserViewModel viewModel;
 
@@ -33,32 +33,26 @@ public class EditUserActivity extends AppCompatActivity {
         setupEditButtonListener();
     }
 
-    // UI 요소 초기화
+    // View Binding 초기화
     private void initializeViews(){
-        nameEdit = findViewById(R.id.edit_name);
-        phoneEdit = findViewById(R.id.edit_phone);
-        addressEdit = findViewById(R.id.edit_address);
-        editButton = findViewById(R.id.save_button);
+        binding = ActivityAddUserBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 
     // 편집버튼 눌렀을떄 각각의 리사이클러뷰 아이템데이터 받아옴 / 받아와서 그 데이터를 뿌려줌
     private void getData(){
         Intent intent = getIntent();
         userUuid = UUID.fromString(intent.getStringExtra("id"));  // id 값 가져오기
-        String name = intent.getStringExtra("name");
-        String phone = intent.getStringExtra("phone");
-        String address = intent.getStringExtra("address");
-
-        nameEdit.setText(name);
-        phoneEdit.setText(phone);
-        addressEdit.setText(address);
+        binding.editName.setText(intent.getStringExtra("name"));
+        binding.editPhone.setText(intent.getStringExtra("phone"));
+        binding.editAddress.setText(intent.getStringExtra("address"));
     }
 
     private void setupEditButtonListener() {
-        editButton.setOnClickListener(v -> {
-            String name = nameEdit.getText().toString();
-            String phone = phoneEdit.getText().toString();
-            String address = addressEdit.getText().toString();
+        binding.saveButton.setOnClickListener(v -> {
+            String name = binding.editName.getText().toString();
+            String phone = binding.editPhone.getText().toString();
+            String address = binding.editAddress.getText().toString();
 
             if (name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
                 Toast.makeText(this, "모든 값을 입력해주세요", Toast.LENGTH_SHORT).show();

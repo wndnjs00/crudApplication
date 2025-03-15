@@ -8,13 +8,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.crudapplication.R;
+import com.example.crudapplication.databinding.ActivityAddUserBinding;
 import com.example.crudapplication.presentation.viewmodel.UserViewModel;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class AddUserActivity extends AppCompatActivity {
-    private EditText nameEdit, phoneEdit, addressEdit;
-    private Button saveButton;
+    private ActivityAddUserBinding binding;
     private UserViewModel viewModel;    // ViewModel 선언
 
     @Override
@@ -27,19 +27,18 @@ public class AddUserActivity extends AppCompatActivity {
     }
 
 
-    // UI 요소 초기화
+    // View Binding 초기화
     private void initializeViews() {
-        nameEdit = findViewById(R.id.edit_name);
-        phoneEdit = findViewById(R.id.edit_phone);
-        addressEdit = findViewById(R.id.edit_address);
-        saveButton = findViewById(R.id.save_button);
+        binding = ActivityAddUserBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 
     private void setupSaveButtonListener() {
-        saveButton.setOnClickListener(v -> {
-            String name = nameEdit.getText().toString();
-            String phone = phoneEdit.getText().toString();
-            String address = addressEdit.getText().toString();
+        binding.saveButton.setOnClickListener(v -> {
+            // 입력값 가져오기
+            String name = binding.editName.getText().toString();
+            String phone = binding.editPhone.getText().toString();
+            String address = binding.editAddress.getText().toString();
 
             if (name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
                 Toast.makeText(this, "모든값을 입력해주세요", Toast.LENGTH_SHORT).show();

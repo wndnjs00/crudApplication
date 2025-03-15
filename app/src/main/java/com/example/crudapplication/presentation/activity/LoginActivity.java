@@ -10,14 +10,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.crudapplication.R;
+import com.example.crudapplication.databinding.ActivityDetailBinding;
+import com.example.crudapplication.databinding.ActivityLoginBinding;
 import com.example.crudapplication.presentation.viewmodel.AuthViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
-    private EditText emailEditText, passwordEditText;
-    private Button loginButton, registerButton;
+    private ActivityLoginBinding binding;
     private AuthViewModel authViewModel;
 
     @Override
@@ -32,17 +33,15 @@ public class LoginActivity extends AppCompatActivity {
 
     // UI 요소 초기화
     private void initializeViews(){
-        emailEditText = findViewById(R.id.et_email2);
-        passwordEditText = findViewById(R.id.et_password2);
-        loginButton = findViewById(R.id.btn_login);
-        registerButton = findViewById(R.id.btn_register);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 
     private void setupLoginButtonListener(){
-        loginButton.setOnClickListener(v -> {
+        binding.btnLogin.setOnClickListener(v -> {
             // 입력값 가져오기
-            String email = emailEditText.getText().toString().trim();
-            String password = passwordEditText.getText().toString().trim();
+            String email = binding.etEmail2.getText().toString().trim();
+            String password = binding.etPassword2.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "이메일과 비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
@@ -69,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void setUpRegisterButtonListener(){
-        registerButton.setOnClickListener(v -> {
+        binding.btnRegister.setOnClickListener(v -> {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
         });
