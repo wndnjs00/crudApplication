@@ -99,9 +99,34 @@ public class AuthUserRepositoryImpl implements AuthUserRepository{
 
     // 로그아웃 메서드
     @Override
-    public void logout() {
-        tokenManager.clearToken();  // 저장된 토큰 삭제
-        Log.d("Logout", "Clearing token");
+    public void logout(Runnable onSuccess, Runnable onError) {
+        String accessToken = tokenManager.getAccessToken();
+        if (accessToken != null) {
+            // 서버 로그아웃 API 호출
+            api.logout("Bearer " + accessToken).enqueue(new Callback<ApiResponse<Void>>() {
+                @Override
+                public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
+                    if (response.isSuccessful()) {
+                        Log.d("Logout", "Logout successful on server");
+                        tokenManager.clearToken(); // 로컬 토큰 삭제
+                        onSuccess.run(); // 성공 콜백 실행
+                    } else {
+                        Log.e("Logout", "Logout failed on server: " + response.code());
+                        onError.run(); // 실패 콜백 실행
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable throwable) {
+                    Log.e("Logout", "Logout network error: " + throwable.getMessage(), throwable);
+                    onError.run(); // 네트워크 오류 콜백 실행
+                }
+            });
+        } else {
+            Log.w("Logout", "Access token is null, clearing local tokens");
+            tokenManager.clearToken(); // 로컬 토큰 삭제만 수행
+            onSuccess.run(); // 로컬 토큰만 삭제해도 성공 콜백 실행
+        }
     }
 
     // 로그인 상태 확인

@@ -45,9 +45,9 @@ public class AuthViewModel extends ViewModel {
     }
 
     // 로그아웃
-    public void logout() {
+    public void logout(Runnable onSuccess, Runnable onError) {
         // 토큰 삭제
-        authUserRepository.logout();
+        authUserRepository.logout(onSuccess, onError);
         tokenManager.setTokenExpired(true); // 로그아웃 시 토큰 만료 상태로 설정
     }
 
@@ -55,13 +55,13 @@ public class AuthViewModel extends ViewModel {
         tokenManager.setTokenExpired(false); // 토큰 만료 상태 초기화
     }
 
-    public boolean isLoggedIn() {
-        // 저장된 토큰의 존재여부로 사용자가 로그인한 상태인지 아닌지 확인
-        return authUserRepository.isLoggedIn();
-    }
+//    public boolean isLoggedIn() {
+//        // 저장된 토큰의 존재여부로 사용자가 로그인한 상태인지 아닌지 확인
+//        return authUserRepository.isLoggedIn();
+//    }
 
-    public String getStoredToken() {
-        // 저장된 토큰 반환
-        return authUserRepository.getStoredToken();
-    }
+//    public String getStoredToken() {
+//        // 저장된 토큰 반환
+//        return authUserRepository.getStoredToken();
+//    }
 }
