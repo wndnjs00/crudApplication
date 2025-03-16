@@ -35,13 +35,14 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        clickFabButton();
-        setupRecyclerView();
         setupViewModel();
-        setupLongClickListener();
-        setupClickListener();
         setupLogoutListener();
         observeTokenExpiration();
+
+        clickFabButton();
+        setupRecyclerView();
+        setupLongClickListener();
+        setupClickListener();
         setupSwipeRefreshLayout();
 
         viewModel.AllFetchUsers();  //데이터 새로고침(전체 데이터조회)
@@ -54,7 +55,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clickFabButton() {
-        binding.fab.setOnClickListener(v -> IntentAddUserActivity());
+        binding.fab.setOnClickListener(v -> {
+            Intent intent = new Intent(this, AddUserActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void setupSwipeRefreshLayout() {
@@ -65,11 +69,6 @@ public class MainActivity extends AppCompatActivity {
             // 새로고침 완료 후 로딩 상태 해제
             binding.swipeRefreshLayout.setRefreshing(false);
         });
-    }
-
-    private void IntentAddUserActivity() {
-        Intent intent = new Intent(this, AddUserActivity.class);
-        startActivity(intent);
     }
 
     private void setupRecyclerView() {
@@ -123,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     private void observeTokenExpiration() {
         authViewModel.getTokenExpiredLiveData().observe(this, isExpired -> {
             if (Boolean.TRUE.equals(isExpired)) {
-                Toast.makeText(this, "토큰이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

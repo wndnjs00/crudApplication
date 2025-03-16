@@ -53,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
             // LiveData값을 관찰해서 해당값이 업데이트되면(200ok되고, 성공적으로 User데이터가 들어갔다는뜻), 로그인 성공이라는 메시지가 뜸
             authViewModel.getAuthUserList().observe(this, user -> {
                 if (user != null) {
+                    authViewModel.resetTokenExpired(); // 토큰 만료 상태 초기화
+
                     Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);

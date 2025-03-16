@@ -25,7 +25,7 @@ public class TokenManager {
     // SharedPreferences 인스턴스 선언(final로 선언하여 한 번 초기화된 후 변경 불가능하도록)
     private final SharedPreferences prefs;
     //LiveData를 사용해 토큰 만료 상태를 관찰 가능하도록 변경하기위해
-    private final MutableLiveData<Boolean> tokenExpired = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> tokenExpired = new MutableLiveData<>(false); // 초기값 false 설정
 
     // Context를 주입받아 SharedPreferences 초기화
     @Inject  // Hilt를 통한 의존성 주입
@@ -44,6 +44,8 @@ public class TokenManager {
              .putString(KEY_ACCESS_TOKEN, accessToken)
              .putString(KEY_REFRESH_TOKEN, refreshToken)
              .apply();
+
+        setTokenExpired(false); // 토큰 저장 시 만료 상태 초기화
 
         // 저장된 토큰 확인 로그 추가
         Log.d("TokenManager", "Access Token: " + getAccessToken());
@@ -72,6 +74,12 @@ public class TokenManager {
              .remove(KEY_ACCESS_TOKEN)
              .remove(KEY_REFRESH_TOKEN)
              .apply();
+
+        setTokenExpired(true); // 토큰 삭제 시 만료 상태 설정(토큰 만료)
+    }
+
+    public void setTokenExpired(boolean isExpired) {
+        tokenExpired.postValue(isExpired); // 만료 상태 업데이트
     }
 
     // 토큰 존재 여부 확인 메서드
@@ -81,7 +89,7 @@ public class TokenManager {
     }
 
     public void notifyTokenExpired() {
-        tokenExpired.postValue(true); // 토큰 만료 상태를 LiveData로 전달
+        tokenExpired.postValue(true); // 토큰 만료 상태를 LiveData로 전달 (토근 만료)
     }
 
     // LiveData를 사용해 토큰 만료 상태를 관찰 가능하도록

@@ -48,6 +48,11 @@ public class AuthViewModel extends ViewModel {
     public void logout() {
         // 토큰 삭제
         authUserRepository.logout();
+        tokenManager.setTokenExpired(true); // 로그아웃 시 토큰 만료 상태로 설정
+    }
+
+    public void resetTokenExpired() {
+        tokenManager.setTokenExpired(false); // 토큰 만료 상태 초기화
     }
 
     public boolean isLoggedIn() {
