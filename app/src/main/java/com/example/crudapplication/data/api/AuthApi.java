@@ -9,6 +9,7 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -29,4 +30,9 @@ public interface AuthApi {
     // 로그아웃
     @POST("/auth/logout")
     Call<ApiResponse<Void>> logout(@Header("Authorization") String token);
+
+    // 회원탈퇴
+    @DELETE("/auth/delete")
+    Call<ApiResponse<Void>> deleteAccount(@Header("Authorization") String token);
+
 }

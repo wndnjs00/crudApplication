@@ -25,6 +25,7 @@
 
     <!-- MainFragment -->
     <string name="main_fragment_logout_text">로그아웃</string>
+    <string name="main_fragment_delete_account_text">회원탈퇴</string>
 
     <!-- RegisterFragment -->
     <string name="register_fragment_tv_register">회원가입</string>

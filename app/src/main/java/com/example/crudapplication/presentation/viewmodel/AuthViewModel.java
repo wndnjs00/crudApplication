@@ -55,6 +55,12 @@ public class AuthViewModel extends ViewModel {
         tokenManager.setTokenExpired(false); // 토큰 만료 상태 초기화
     }
 
+    // 회원탈퇴
+    public void deleteAccount(Runnable onSuccess, Runnable onError) {
+        authUserRepository.deleteAccount(onSuccess, onError);
+        tokenManager.clearToken(); // 회원 탈퇴 시 토큰 제거
+    }
+
 //    public boolean isLoggedIn() {
 //        // 저장된 토큰의 존재여부로 사용자가 로그인한 상태인지 아닌지 확인
 //        return authUserRepository.isLoggedIn();

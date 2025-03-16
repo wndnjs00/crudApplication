@@ -1,6 +1,8 @@
 package com.example.crudapplication.presentation.activity;
 
 import android.os.Bundle;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.widget.TextView;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setupLongClickListener();
         setupClickListener();
         setupSwipeRefreshLayout();
+        setupDeleteAccountListener();
 
         viewModel.AllFetchUsers();  //데이터 새로고침(전체 데이터조회)
     }
@@ -136,6 +139,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+        });
+    }
+
+    // 회원탈퇴 텍스트 클릭시
+    private void setupDeleteAccountListener() {
+        binding.deleteAccountText.setOnClickListener(v -> {
+            // 다이얼로그 표시
+            new AlertDialog.Builder(this)
+                    .setTitle("회원탈퇴")
+                    .setMessage("정말로 계정을 삭제하시겠습니까?")
+                    .setPositiveButton("확인", (dialog, which) -> {
+                        // 회원탈퇴 요청
+                        authViewModel.deleteAccount(
+                                // 성공 처리
+                                () -> {
+                                    Toast.makeText(this, "회원탈퇴가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish(); // 현재 액티비티 종료
+                                },
+                                // 실패 처리
+                                () -> {
+                                    Toast.makeText(this, "회원탈퇴에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                                }
+                        );
+                    })
+                    .setNegativeButton("취소", null) // 취소 시 아무 작업 없음
+                    .show();
         });
     }
 

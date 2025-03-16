@@ -10,4 +10,5 @@ public interface AuthUserRepository {
     void logout(Runnable onSuccess, Runnable onError);
     boolean isLoggedIn();
     String getStoredToken();
+    void deleteAccount(Runnable onSuccess, Runnable onError);
 }

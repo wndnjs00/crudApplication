@@ -8,23 +8,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/logout_text"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:orientation="horizontal"
                 android:padding="10dp"
-                android:text="@string/main_fragment_logout_text"
-                android:textSize="@dimen/text_size_12"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:clickable="true"
-                android:focusable="true" />
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/logout_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_fragment_logout_text"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <TextView
+                    android:id="@+id/delete_account_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/main_fragment_delete_account_text"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -40,6 +60,7 @@
                 android:layout_margin="16dp"
                 android:importantForAccessibility="no"
                 android:src="@android:drawable/ic_input_add" />
+
         </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

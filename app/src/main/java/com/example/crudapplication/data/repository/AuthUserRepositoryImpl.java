@@ -141,4 +141,37 @@ public class AuthUserRepositoryImpl implements AuthUserRepository{
     public String getStoredToken() {
         return tokenManager.getAccessToken(); // 저장된 토큰 반환
     }
+
+
+    // 회원탈퇴
+    @Override
+    public void deleteAccount(Runnable onSuccess, Runnable onError) {
+        String accessToken = tokenManager.getAccessToken();
+        if (accessToken != null) {
+            // 서버 회원탈퇴 API 호출
+            api.deleteAccount("Bearer " + accessToken).enqueue(new Callback<ApiResponse<Void>>() {
+                @Override
+                public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
+                    if (response.isSuccessful()) {
+                        Log.d("DeleteAccount", "Account deletion successful on server");
+                        tokenManager.clearToken();  // 로컬 토큰 삭제
+                        onSuccess.run();
+                    } else {
+                        Log.e("DeleteAccount", "Account deletion failed on server: " + response.code());
+                        onError.run();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable throwable) {
+                    Log.e("DeleteAccount", "Account deletion network error: " + throwable.getMessage(), throwable);
+                    onError.run();  // 네트워크 오류 콜백 실행
+                }
+            });
+        } else {
+            onError.run();  // 토큰이 없으면 삭제 실패 처리
+        }
+    }
+
+
 }
