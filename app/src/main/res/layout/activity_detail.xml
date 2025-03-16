@@ -12,8 +12,8 @@
         android:id="@+id/btn_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="편집"
-        android:textSize="16sp"
+        android:text="@string/detail_fragment_btn_edit"
+        android:textSize="@dimen/text_size_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -21,8 +21,8 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="이름"
-        android:textSize="35sp"
+        android:text="@string/detail_fragment_tv_name"
+        android:textSize="@dimen/text_size_35"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/btn_edit"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,8 +45,8 @@
             android:id="@+id/tv_phone_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="휴대전화"
-            android:textSize="16sp"
+            android:text="@string/detail_fragment_phone_title"
+            android:textSize="@dimen/text_size_16"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -56,8 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="010-0000-0000"
-            android:textSize="16sp"
+            android:text="@string/detail_fragment_phone_value"
+            android:textSize="@dimen/text_size_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_phone_title" />
 
@@ -78,8 +78,8 @@
             android:id="@+id/tv_address_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="주소"
-            android:textSize="16sp"
+            android:text="@string/detail_fragment_address_title"
+            android:textSize="@dimen/text_size_16"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -89,8 +89,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="서울특별시 강남구"
-            android:textSize="16sp"
+            android:text="@string/detail_fragment_address_value"
+            android:textSize="@dimen/text_size_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_address_title" />
 
@@ -110,19 +110,21 @@
             android:id="@+id/btn_call"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="전화"
+            android:text="@string/detail_fragment_btn_call"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_message"
-            app:layout_constraintWidth_percent="0.5" />
+            app:layout_constraintWidth_percent="0.5"
+            tools:ignore="MissingConstraints" />
 
         <Button
             android:id="@+id/btn_message"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="메시지"
+            android:text="@string/detail_fragment_btn_message"
             app:layout_constraintStart_toEndOf="@id/btn_call"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintWidth_percent="0.5" />
+            app:layout_constraintWidth_percent="0.5"
+            tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
