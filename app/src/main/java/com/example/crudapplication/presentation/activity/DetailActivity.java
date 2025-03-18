@@ -1,6 +1,7 @@
 package com.example.crudapplication.presentation.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -32,6 +33,8 @@ public class DetailActivity extends AppCompatActivity {
         initializeViews();
         getData();
         setupEditButton();
+        setupCallButton();
+        setupMessageButton();
     }
 
     // View Binding 초기화
@@ -67,4 +70,29 @@ public class DetailActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    // 전화걸기
+    private void setupCallButton(){
+        Button callButton = findViewById(R.id.btn_call);
+        callButton.setOnClickListener(v -> {
+            String phoneNumber = binding.tvPhoneValue.getText().toString();
+
+            Intent callIntent = new Intent(Intent.ACTION_DIAL); // 전화 다이얼로그 화면으로 이동
+            callIntent.setData(Uri.parse("tel:" + phoneNumber)); // phoneNumber 전달
+            startActivity(callIntent);
+        });
+    }
+
+    // 메시지 화면으로
+    private void setupMessageButton(){
+        Button messageButton = findViewById(R.id.btn_message);
+        messageButton.setOnClickListener(v -> {
+            String phoneNumber = binding.tvPhoneValue.getText().toString();
+
+            Intent messageIntent = new Intent(Intent.ACTION_SENDTO); // 메시지 화면으로 이동
+            messageIntent.setData(Uri.parse("smsto:" + phoneNumber)); // phoneNumber 전달
+            startActivity(messageIntent);
+        });
+    }
+
 }
