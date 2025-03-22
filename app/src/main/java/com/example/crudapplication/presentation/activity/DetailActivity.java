@@ -1,8 +1,11 @@
 package com.example.crudapplication.presentation.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class DetailActivity extends AppCompatActivity {
     private ActivityDetailBinding binding; // View Binding 객체 선언
     private String uuidString; //id값 저장을 위한
+    private String profileImageBase64;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,7 @@ public class DetailActivity extends AppCompatActivity {
         setupEditButton();
         setupCallButton();
         setupMessageButton();
+        displayProfileImage();
     }
 
     // View Binding 초기화
@@ -50,6 +55,7 @@ public class DetailActivity extends AppCompatActivity {
         binding.tvName.setText(intent.getStringExtra("name"));
         binding.tvPhoneValue.setText(intent.getStringExtra("phone"));
         binding.tvAddressValue.setText(intent.getStringExtra("address"));
+        profileImageBase64 = intent.getStringExtra("profileImage");
     }
 
 
@@ -63,12 +69,26 @@ public class DetailActivity extends AppCompatActivity {
             intent.putExtra("name", binding.tvName.getText().toString());
             intent.putExtra("phone", binding.tvPhoneValue.getText().toString());
             intent.putExtra("address", binding.tvAddressValue.getText().toString());
+            intent.putExtra("profileImage", profileImageBase64);
 //            Log.d("id", String.valueOf(userId));
 //            Log.d("name", tvName.getText().toString());
 //            Log.d("phone", tvPhone.getText().toString());
 //            Log.d("address", tvAddress.getText().toString());
             startActivity(intent);
         });
+    }
+
+    // profileImageBase64에 저장된 이미지 데이터를 ivProfile에 뿌려줌
+    private void displayProfileImage() {
+        if (profileImageBase64 != null && !profileImageBase64.isEmpty()) {
+            try {
+                byte[] decodedBytes = Base64.decode(profileImageBase64, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                binding.ivProfile.setImageBitmap(bitmap);
+            } catch (IllegalArgumentException e) {
+                Log.e("DetailActivity", "Base64 디코딩 실패: " + e.getMessage());
+            }
+        }
     }
 
     // 전화걸기

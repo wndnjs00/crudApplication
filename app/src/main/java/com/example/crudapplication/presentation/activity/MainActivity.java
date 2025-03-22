@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("name", user.getName());
             intent.putExtra("phone", user.getPhone());
             intent.putExtra("address", user.getAddress());
+            intent.putExtra("profileImage", user.getProfileImage());
             startActivity(intent);
         });
     }

@@ -7,17 +7,19 @@ public class UserProfile {
     private String name;
     private String phone;
     private String address;
+    private String profileImage; // Base64 이미지 데이터 추가
 
     public UserProfile() {
         // UUID 자동 생성
         this.uuid = UUID.randomUUID();
     }
 
-    public UserProfile(String name, String phone, String address) {
+    public UserProfile(String name, String phone, String address, String profileImage) {
         this.uuid = UUID.randomUUID();
         this.name = name;
         this.phone = phone;
         this.address = address;
+        this.profileImage = profileImage;
     }
 
     // Getter와 Setter
@@ -53,6 +55,13 @@ public class UserProfile {
         this.address = address;
     }
 
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 
     // 추후 삭제
     // JSON 데이터를 확인하기 위한 toString() 메서드 추가
@@ -63,6 +72,7 @@ public class UserProfile {
                 "\"name\":\"" + name + "\"," +
                 "\"phone\":\"" + phone + "\"," +
                 "\"address\":\"" + address + "\"" +
+                "\"profileImage\":\"" + profileImage + "\"" +
                 "}";
     }
 }

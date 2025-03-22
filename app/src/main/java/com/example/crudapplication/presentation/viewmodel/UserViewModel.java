@@ -32,16 +32,16 @@ public class UserViewModel extends ViewModel {
         userRepository.AllFetchUsers(userList);
     }
 
-    public void addUser(String name, String phone, String address, Runnable onSuccess) {
-        UserProfile user = new UserProfile(name, phone, address);
+    public void addUser(String name, String phone, String address, String profileImage, Runnable onSuccess) {
+        UserProfile user = new UserProfile(name, phone, address, profileImage);
         userRepository.createUser(user, () -> {
             AllFetchUsers();    // 데이터 새로고침
             onSuccess.run();
         });
     }
 
-    public void updateUser(UUID uuid, String name, String phone, String address, Runnable onSuccess){
-        userRepository.updateUser(uuid, name, phone, address, () -> {
+    public void updateUser(UUID uuid, String name, String phone, String address, String profileImage, Runnable onSuccess){
+        userRepository.updateUser(uuid, name, phone, address, profileImage, () -> {
             AllFetchUsers();    //데이터 새로고침
             onSuccess.run();
         });

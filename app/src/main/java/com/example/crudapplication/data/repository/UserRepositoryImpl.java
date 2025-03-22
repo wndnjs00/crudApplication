@@ -56,7 +56,7 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public void createUser(UserProfile user, Runnable onSuccess) {
         Log.d("요청 JSON", "UserProfile : " + user);
-        UserProfileRequestDto userProfileRequestDto = new UserProfileRequestDto(user.getName(), user.getPhone(), user.getAddress());
+        UserProfileRequestDto userProfileRequestDto = new UserProfileRequestDto(user.getName(), user.getPhone(), user.getAddress(), user.getProfileImage());
 
         api.createUser(userProfileRequestDto).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
@@ -77,8 +77,8 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public void updateUser(UUID uuid, String name, String phone, String address, Runnable onSuccess) {
-        UserProfileRequestDto userProfileRequestDto = new UserProfileRequestDto(name, phone, address);
+    public void updateUser(UUID uuid, String name, String phone, String address, String profileImage, Runnable onSuccess) {
+        UserProfileRequestDto userProfileRequestDto = new UserProfileRequestDto(name, phone, address, profileImage);
 
         api.updateUser(uuid, userProfileRequestDto).enqueue(new Callback<ApiResponse<Void>>() {
             @Override

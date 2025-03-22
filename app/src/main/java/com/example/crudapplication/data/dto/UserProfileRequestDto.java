@@ -4,11 +4,13 @@ public class UserProfileRequestDto {
     private String name;
     private String phone;
     private String address;
+    private String profileImage;    // Base64로 인코딩된 이미지 데이터 추가
 
-    public UserProfileRequestDto(String name, String phone, String address) {
+    public UserProfileRequestDto(String name, String phone, String address, String profileImage) {
         this.name = name;
         this.phone = phone;
         this.address = address;
+        this.profileImage = profileImage;
     }
 
     // Getters and Setters
@@ -35,5 +37,9 @@ public class UserProfileRequestDto {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }
