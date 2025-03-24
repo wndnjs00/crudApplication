@@ -10,6 +10,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -35,4 +36,7 @@ public interface AuthApi {
     @DELETE("/auth/delete")
     Call<ApiResponse<Void>> deleteAccount(@Header("Authorization") String token);
 
+    // 사용자 정보 조회 -> 내정보를 표시하기위해
+    @GET("/auth/info")
+    Call<ApiResponse<Void>> getUserInfo(@Header("Authorization") String token);
 }

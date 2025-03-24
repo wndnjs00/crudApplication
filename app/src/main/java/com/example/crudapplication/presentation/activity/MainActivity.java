@@ -51,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
         viewModel.AllFetchUsers();  //데이터 새로고침(전체 데이터조회)
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        viewModel.AllFetchUsers(); // 화면 복귀 시 데이터 새로고침
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        viewModel.AllFetchUsers(); // 화면 복귀 시 데이터 새로고침
+//    }
 
     private void clickFabButton() {
         binding.fab.setOnClickListener(v -> {
