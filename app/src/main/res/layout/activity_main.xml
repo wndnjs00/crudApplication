@@ -60,30 +60,30 @@
 
 
             <!-- 프로필 영역 -->
-            <LinearLayout
-                android:id="@+id/profile_image_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/profile_image_layout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:padding="16dp"-->
+<!--                android:gravity="center_vertical">-->
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/profile_img"
-                    android:layout_marginEnd="16dp" />
+<!--                <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                    android:id="@+id/profile_image"-->
+<!--                    android:layout_width="60dp"-->
+<!--                    android:layout_height="60dp"-->
+<!--                    android:src="@drawable/profile_img"-->
+<!--                    android:layout_marginEnd="16dp" />-->
 
-                <TextView
-                    android:id="@+id/profile_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_fragment_profile_name"
-                    android:textSize="@dimen/text_size_18"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:id="@+id/profile_name"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/main_fragment_profile_name"-->
+<!--                    android:textSize="@dimen/text_size_18"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textColor="@color/black" />-->
+<!--            </LinearLayout>-->
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -99,6 +99,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
                 android:layout_margin="16dp"
+                android:backgroundTint="#4CAF50"
+                app:tint="#FFFFFF"
                 android:importantForAccessibility="no"
                 android:src="@android:drawable/ic_input_add" />
 

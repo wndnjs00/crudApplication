@@ -20,6 +20,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.crudapplication.R;
 import com.example.crudapplication.databinding.ActivityDetailBinding;
 import com.example.crudapplication.presentation.viewmodel.UserViewModel;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -61,7 +63,7 @@ public class DetailActivity extends AppCompatActivity {
 
     // 편집버튼 눌렀을때
     private void setupEditButton() {
-        Button editButton = findViewById(R.id.btn_edit);
+        FloatingActionButton editButton = findViewById(R.id.btn_edit);
         editButton.setOnClickListener(v -> {
             // EditUserActivity로 이동하면서 데이터 전달
             Intent intent = new Intent(DetailActivity.this, EditUserActivity.class);
@@ -93,7 +95,7 @@ public class DetailActivity extends AppCompatActivity {
 
     // 전화걸기
     private void setupCallButton(){
-        Button callButton = findViewById(R.id.btn_call);
+        MaterialButton callButton = findViewById(R.id.btn_call);
         callButton.setOnClickListener(v -> {
             String phoneNumber = binding.tvPhoneValue.getText().toString();
 
@@ -105,7 +107,7 @@ public class DetailActivity extends AppCompatActivity {
 
     // 메시지 화면으로
     private void setupMessageButton(){
-        Button messageButton = findViewById(R.id.btn_message);
+        MaterialButton messageButton = findViewById(R.id.btn_message);
         messageButton.setOnClickListener(v -> {
             String phoneNumber = binding.tvPhoneValue.getText().toString();
 

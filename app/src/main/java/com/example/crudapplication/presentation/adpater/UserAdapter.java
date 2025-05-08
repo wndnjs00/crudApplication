@@ -1,5 +1,9 @@
 package com.example.crudapplication.presentation.adpater;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +15,8 @@ import com.example.crudapplication.R;
 import com.example.crudapplication.data.model.UserProfile;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     private List<UserProfile> users = new ArrayList<>();
@@ -59,6 +65,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.name.setText(user.getName());
         holder.phone.setText(user.getPhone());
 
+        // 프로필 이미지 설정
+        if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
+            try {
+                byte[] decodedBytes = Base64.decode(user.getProfileImage(), Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                holder.profileImage.setImageBitmap(bitmap);
+            } catch (IllegalArgumentException e) {
+                Log.e("UserAdapter", "Base64 디코딩 실패: " + e.getMessage());
+                // 이미지 로드 실패 시 기본 이미지 설정
+                holder.profileImage.setImageResource(R.drawable.profile_img);
+            }
+        } else {
+            // 프로필 이미지가 없을 경우 기본 이미지 설정
+            holder.profileImage.setImageResource(R.drawable.profile_img);
+        }
+
         // 클릭 이벤트
         holder.itemView.setOnClickListener(v -> {
             if (clickListener != null){
@@ -86,11 +108,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     // 레이아웃과 데이터 연결
     static class UserViewHolder extends RecyclerView.ViewHolder {
         TextView name, phone;
+        CircleImageView profileImage;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.tv_name);
             phone = itemView.findViewById(R.id.tv_phone);
+            profileImage = itemView.findViewById(R.id.iv_profile);
         }
     }
 }
