@@ -1,4 +1,4 @@
-# 📞 연락처 서버
+# 📞 연락처 앱
 Spring Boot REST API 서버연동을 통해 구현한 간단한 연락처 앱
 <br/>
 [구현한 API 서버](https://github.com/wndnjs00/crud)
