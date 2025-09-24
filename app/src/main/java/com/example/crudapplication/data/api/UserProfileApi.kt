@@ -3,7 +3,6 @@ package com.example.crudapplication.data.api
 import com.example.crudapplication.data.dto.UserProfileRequestDto
 import com.example.crudapplication.data.model.ApiResponse
 import com.example.crudapplication.data.model.UserProfile
-import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -14,14 +13,14 @@ import java.util.UUID
 
 interface UserProfileApi {
     @GET("/user/all")
-    fun getAllUsers(): Call<ApiResponse<List<UserProfile>>>
+    suspend fun getAllUsers(): ApiResponse<List<UserProfile>>
 
     @POST("/user/new")
-    fun createUser(@Body user: UserProfileRequestDto): Call<ApiResponse<Void>>
+    suspend fun createUser(@Body user: UserProfileRequestDto): ApiResponse<Void>
 
     @PUT("/user/{uuid}")
-    fun updateUser(@Path("uuid") uuid: UUID, @Body user: UserProfileRequestDto): Call<ApiResponse<Void>>
+    suspend fun updateUser(@Path("uuid") uuid: UUID, @Body user: UserProfileRequestDto): ApiResponse<Void>
 
     @DELETE("/user/{uuid}")
-    fun deleteUser(@Path("uuid") uuid: UUID): Call<ApiResponse<Void>>
+    suspend fun deleteUser(@Path("uuid") uuid: UUID): ApiResponse<Void>
 } 

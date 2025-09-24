@@ -15,7 +15,7 @@ class AuthInterceptor(private val tokenManager: TokenManager) : Interceptor {
                 .build()
 
             val response = chain.proceed(newRequest)
-            if (response.code() == 401) {
+            if (response.code == 401) {
                 Log.d("AuthInterceptor", "Access Token expired, passing to Authenticator.")
             }
             return response

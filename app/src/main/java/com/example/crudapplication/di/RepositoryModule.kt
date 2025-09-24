@@ -1,10 +1,13 @@
 package com.example.crudapplication.di
 
 import android.content.Context
+import androidx.room.Room
 import com.example.crudapplication.data.api.AuthApi
 import com.example.crudapplication.data.api.RetrofitService
 import com.example.crudapplication.data.api.UserProfileApi
 import com.example.crudapplication.data.local.TokenManager
+import com.example.crudapplication.data.local.db.AppDatabase
+import com.example.crudapplication.data.local.db.UserProfileDao
 import com.example.crudapplication.data.repository.AuthUserRepository
 import com.example.crudapplication.data.repository.AuthUserRepositoryImpl
 import com.example.crudapplication.data.repository.UserRepository
@@ -25,7 +28,16 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(api: UserProfileApi): UserRepository = UserRepositoryImpl(api)
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
+        Room.databaseBuilder(context, AppDatabase::class.java, "app.db").build()
+
+    @Provides
+    @Singleton
+    fun provideUserProfileDao(db: AppDatabase): UserProfileDao = db.userProfileDao()
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(api: UserProfileApi, dao: UserProfileDao): UserRepository = UserRepositoryImpl(api, dao)
 
     @Provides
     @Singleton

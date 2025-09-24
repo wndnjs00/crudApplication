@@ -1,6 +1,5 @@
 package com.example.crudapplication.presentation.adpater
 
-import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.crudapplication.R
 import com.example.crudapplication.data.model.UserProfile
 import de.hdodenhof.circleimageview.CircleImageView
@@ -63,8 +63,12 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
         if (!imageBase64.isNullOrEmpty()) {
             try {
                 val decodedBytes = Base64.decode(imageBase64, Base64.DEFAULT)
-                val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-                holder.profileImage.setImageBitmap(bitmap)
+                Glide.with(holder.itemView)
+                    .asBitmap()
+                    .load(decodedBytes)
+                    .placeholder(R.drawable.profile_img)
+                    .error(R.drawable.profile_img)
+                    .into(holder.profileImage)
             } catch (e: IllegalArgumentException) {
                 Log.e("UserAdapter", "Base64 디코딩 실패: ${e.message}")
                 holder.profileImage.setImageResource(R.drawable.profile_img)

@@ -59,19 +59,35 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // Retrofit
+    // Kotlin Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+
+    // Lifecycle KTX
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+
+    // Activity/Fragment KTX
+    implementation ("androidx.activity:activity-ktx:1.9.3")
+    implementation ("androidx.fragment:fragment-ktx:1.8.5")
+
+    // Retrofit & OkHttp
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // Hilt
     implementation ("com.google.dagger:hilt-android:2.51.1")
     kapt ("com.google.dagger:hilt-compiler:2.51.1")
 
-    // ViewModels KTX
-//    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7") // by viewModels() 지원
-//    implementation ("androidx.core:core-ktx:1.15.0")
-//    implementation ("androidx.activity:activity-ktx:1.9.3")
-//    implementation ("androidx.fragment:fragment-ktx:1.8.5")
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    // Glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    kapt ("com.github.bumptech.glide:compiler:4.16.0")
 
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 }

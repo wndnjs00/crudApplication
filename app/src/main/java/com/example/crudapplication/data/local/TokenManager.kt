@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Singleton
 class TokenManager @Inject constructor(
@@ -17,6 +19,7 @@ class TokenManager @Inject constructor(
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
     private val tokenExpired: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val tokenExpiredFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     fun saveTokens(accessToken: String?, refreshToken: String?) {
         prefs.edit()
@@ -48,15 +51,18 @@ class TokenManager @Inject constructor(
 
     fun setTokenExpired(isExpired: Boolean) {
         tokenExpired.postValue(isExpired)
+        tokenExpiredFlow.value = isExpired
     }
 
     fun hasToken(): Boolean = accessToken != null
 
     fun notifyTokenExpired() {
         tokenExpired.postValue(true)
+        tokenExpiredFlow.value = true
     }
 
     fun getTokenExpiredLiveData(): LiveData<Boolean> = tokenExpired
+    fun getTokenExpiredFlow(): StateFlow<Boolean> = tokenExpiredFlow
 
     companion object {
         private const val PREF_NAME = "AuthPrefs"
