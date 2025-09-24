@@ -6,7 +6,7 @@ Spring Boot REST API 서버연동을 통해 구현한 간단한 연락처 앱
 ## ⚒️기술스택
 |분류|
 |:---:|
-`JAVA` `MVVM` `CleanArchitecture` `LiveData` `Coroutine` `ViewModel` `Hilt` `Retrofit2` `OkHttp3` `Glide` `SharedPreferences` `MySQL` `Metarial3 Desigin`
+`JAVA` `MVVM` `CleanArchitecture` `LiveData` `ViewModel` `Hilt` `Retrofit2` `OkHttp3` `Glide` `SharedPreferences` `MySQL` `Metarial3 Desigin`
 
 
 <br/><br/>
